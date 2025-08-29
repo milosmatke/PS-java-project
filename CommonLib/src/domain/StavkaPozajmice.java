@@ -89,9 +89,8 @@ public class StavkaPozajmice implements AbstractDomainObject{
                 rs.getString("k.naslov"),
                 rs.getString("k.izdavac"),
                 (Integer)(rs.getObject("k.godina_izdanja")==null?null:rs.getInt("k.godina_izdanja")),
-                rs.getString("k.kategorija"),
-                rs.getString("k.signatura"),
-                rs.getBoolean("k.active")
+                rs.getString("k.zanr"),
+                    rs.getBoolean("k.active")
             );
             Primerak pr = new Primerak(
                 rs.getLong("pr.id"),

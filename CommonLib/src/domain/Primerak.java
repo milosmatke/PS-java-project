@@ -85,8 +85,7 @@ public class Primerak implements AbstractDomainObject{
                 rs.getString("k.naslov"),
                 rs.getString("k.izdavac"),
                 (Integer)(rs.getObject("k.godina_izdanja")==null?null:rs.getInt("k.godina_izdanja")),
-                rs.getString("k.kategorija"),
-                rs.getString("k.signatura"),
+                rs.getString("k.zanr"),
                 rs.getBoolean("k.active")
             );
             list.add(new Primerak(

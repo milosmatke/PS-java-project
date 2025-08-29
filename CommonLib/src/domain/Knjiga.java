@@ -22,8 +22,7 @@ public class Knjiga implements AbstractDomainObject{
     private String naslov;
     private String izdavac;
     private Integer godinaIzdanja;     // YEAR
-    private String kategorija;
-    private String signatura;
+    private String zanr;
     private boolean dostupna;
 
     // M:N → lista autora (puni se kroz JOIN na knjiga_autor + autor)
@@ -32,10 +31,10 @@ public class Knjiga implements AbstractDomainObject{
     public Knjiga() {}
 
     public Knjiga(long id, String isbn, String naslov, String izdavac,
-                  Integer godinaIzdanja, String kategorija, String signatura, boolean dostupna) {
+                  Integer godinaIzdanja, String kategorija, boolean dostupna) {
         this.id = id; this.isbn = isbn; this.naslov = naslov; this.izdavac = izdavac;
-        this.godinaIzdanja = godinaIzdanja; this.kategorija = kategorija;
-        this.signatura = signatura; this.dostupna = dostupna;
+        this.godinaIzdanja = godinaIzdanja; this.zanr = kategorija;
+         this.dostupna = dostupna;
     }
     
 
@@ -82,8 +81,8 @@ public class Knjiga implements AbstractDomainObject{
     public String getInsertValues() {
         return "'" + (isbn==null?"":isbn) + "', '" + naslov + "', '" + (izdavac==null?"":izdavac) + "', " +
                (godinaIzdanja==null? "NULL" : godinaIzdanja) + ", " +
-               (kategorija==null? "NULL" : "'" + kategorija + "'") + ", " +
-               (signatura==null? "NULL" : "'" + signatura + "'") + ", " +
+               (zanr==null? "NULL" : "'" + zanr + "'") + ", " +
+               
                (dostupna ? 1 : 0);
     }
 
@@ -93,8 +92,8 @@ public class Knjiga implements AbstractDomainObject{
                ", naslov='" + naslov + "'" +
                ", izdavac=" + (izdavac==null? "NULL" : "'" + izdavac + "'") +
                ", godina_izdanja=" + (godinaIzdanja==null? "NULL" : godinaIzdanja) +
-               ", kategorija=" + (kategorija==null? "NULL" : "'" + kategorija + "'") +
-               ", signatura=" + (signatura==null? "NULL" : "'" + signatura + "'") +
+               ", kategorija=" + (zanr==null? "NULL" : "'" + zanr + "'") +
+               
                ", dostupna=" + (dostupna ? 1 : 0);
     }
 
@@ -134,7 +133,7 @@ public class Knjiga implements AbstractDomainObject{
                     rs.getString("k.izdavac"),
                     (Integer) (rs.getObject("k.godina_izdanja") == null ? null : rs.getInt("k.godina_izdanja")),
                     rs.getString("k.kategorija"),
-                    rs.getString("k.signatura"),
+                    
                     rs.getBoolean("k.dostupna")
                 );
                 map.put(kId, k);
@@ -193,21 +192,15 @@ public class Knjiga implements AbstractDomainObject{
         this.godinaIzdanja = godinaIzdanja;
     }
 
-    public String getKategorija() {
-        return kategorija;
+    public String getZanr() {
+        return zanr;
     }
 
     public void setKategorija(String kategorija) {
-        this.kategorija = kategorija;
+        this.zanr = kategorija;
     }
 
-    public String getSignatura() {
-        return signatura;
-    }
-
-    public void setSignatura(String signatura) {
-        this.signatura = signatura;
-    }
+    
 
     public boolean isDostupna() {
         return dostupna;

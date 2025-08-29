@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Bibliotekar implements AbstractDomainObject{
     
-    private long id;
+   private long id;
     private String korisnickoIme; // korisnicko_ime
     private String lozinkaHash;   // lozinka_hash
     private String ime;
@@ -66,7 +66,7 @@ public class Bibliotekar implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (korisnicko_ime, lozinka_hash, ime, prezime, uloga, active) ";
+        return " (korisnicko_ime, lozinka, ime, prezime, uloga, active) ";
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Bibliotekar implements AbstractDomainObject{
     @Override
     public String getUpdateValues() {
         return " korisnicko_ime='" + korisnickoIme + "'" +
-               ", lozinka_hash='" + lozinkaHash + "'" +
+               ", lozinka='" + lozinkaHash + "'" +
                ", ime='" + ime + "'" +
                ", prezime='" + prezime + "'" +
                ", uloga='" + uloga + "'" +
@@ -111,7 +111,7 @@ public class Bibliotekar implements AbstractDomainObject{
             list.add(new Bibliotekar(
                 rs.getLong("id"),
                 rs.getString("korisnicko_ime"),
-                rs.getString("lozinka_hash"),
+                rs.getString("lozinka"),
                 rs.getString("ime"),
                 rs.getString("prezime"),
                 rs.getString("uloga"),
