@@ -47,7 +47,14 @@ public class HandleClientThread extends Thread{
         Response response = new Response(ResponseType.SUCCESS, null, null);
         try {
             switch (request.getOperation()) {
-               
+                case Operations.LOGIN:
+                    Bibliotekar bibliotekar = (Bibliotekar) request.getArgument();
+                    
+                    Bibliotekar ulogovani = ServerController.getInstance().login(bibliotekar);
+                   
+                    response.setResult(ulogovani);
+                    
+                    break;
                 
                 default:
                     return null;
