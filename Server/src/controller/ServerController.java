@@ -5,6 +5,12 @@
 package controller;
 
 import domain.Bibliotekar;
+import domain.Clan;
+import domain.Knjiga;
+import so.clan.SOAddClan;
+import so.clan.SODeleteClan;
+import so.clan.SOGetAllClan;
+import so.clan.SOUpdateClan;
 import so.login.SOLogin;
 
 /**
@@ -29,5 +35,30 @@ public class ServerController {
         
         ulogovani=so.getUlogovani();
         return so.getUlogovani();
+    }
+
+
+    public void addClan(Clan clan) throws Exception {
+       
+        SOAddClan so=new SOAddClan();
+        so.templateExecute(clan);
+    
+    }
+
+    public Object getAllClan() throws Exception {
+        SOGetAllClan so= new SOGetAllClan();
+        so.templateExecute(new Clan());
+        return so.getLista();
+    }
+
+    public void updateClan(Clan clan) throws Exception {
+        SOUpdateClan so=new SOUpdateClan();
+        so.templateExecute(clan);
+    }
+
+    public void deleteClan(Clan clan) throws Exception {
+        SODeleteClan so=new SODeleteClan();
+        so.templateExecute(clan);
+        
     }
 }

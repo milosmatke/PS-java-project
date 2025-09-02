@@ -12,6 +12,8 @@ import communication.ResponseType;
 import communication.Sender;
 import controller.ServerController;
 import domain.Bibliotekar;
+import domain.Clan;
+import domain.Knjiga;
 import java.net.Socket;
 
 /**
@@ -51,6 +53,19 @@ public class HandleClientThread extends Thread{
                     Bibliotekar bibliotekar = (Bibliotekar) request.getArgument();
                     Bibliotekar ulogovani = ServerController.getInstance().login(bibliotekar);
                     response.setResult(ulogovani);
+                    break;
+                case Operations.ADD_CLAN:
+                    ServerController.getInstance().addClan((Clan) request.getArgument());
+                    break;
+                case Operations.GET_ALL_CLAN:
+                    response.setResult(ServerController.getInstance().getAllClan());
+                    break;
+                case Operations.UPDATE_CLAN:
+                    ServerController.getInstance().updateClan((Clan) request.getArgument());
+                    break;
+                    
+                case Operations.DELETE_CLAN:
+                    ServerController.getInstance().deleteClan((Clan)request.getArgument());
                     break;
                 
                 default:
