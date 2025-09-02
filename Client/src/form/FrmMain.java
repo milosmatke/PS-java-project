@@ -32,7 +32,7 @@ public class FrmMain extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Glavna klijentska forma");
         this.ulogovani=Communication.getInstance().getUlogovani();
-        lblUlogovani.setText("Ulogovani bibliotekar"+ulogovani);
+        lblUlogovani.setText("Ulogovani bibliotekar: "+ulogovani);
         tblClan.setModel(new TableModelClan());
         
         refreshTableClan();
@@ -76,6 +76,8 @@ public class FrmMain extends javax.swing.JFrame {
         miNovaKnjiga = new javax.swing.JMenuItem();
         mPozajmica = new javax.swing.JMenu();
         miPozajmica = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jmiOdjava = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -326,6 +328,18 @@ public class FrmMain extends javax.swing.JFrame {
 
         jMenuBar1.add(mPozajmica);
 
+        jMenu1.setText("Odjava");
+
+        jmiOdjava.setText("Odjavite se sa sistema");
+        jmiOdjava.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiOdjavaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jmiOdjava);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -427,6 +441,21 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblClanMouseClicked
 
+    private void jmiOdjavaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOdjavaActionPerformed
+      int result = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da "
+                + "se odjavite?", "Konfirmacija", JOptionPane.YES_NO_OPTION);
+
+        if (result == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        if (result == JOptionPane.YES_OPTION) {
+	    new FrmLogin().setVisible(true);
+	    Communication.getInstance().setUlogovani(null);
+            this.dispose();
+        }
+    }//GEN-LAST:event_jmiOdjavaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -470,6 +499,7 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JButton btnObrisiClan;
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -478,6 +508,7 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenuItem jmiOdjava;
     private javax.swing.JLabel lblUlogovani;
     private javax.swing.JMenu mClan;
     private javax.swing.JMenu mKnjiga;
