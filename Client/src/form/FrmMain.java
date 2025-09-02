@@ -4,7 +4,18 @@
  */
 package form;
 
+import communication.Communication;
+import controller.ClientController;
+import domain.Bibliotekar;
+import domain.Clan;
+import domain.Knjiga;
+import form.clan.FrmAddClan;
+import form.clan.FrmUpdateClan;
+import form.components.TableModelClan;
 import form.knjiga.FrmAddKnjiga;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,11 +23,20 @@ import form.knjiga.FrmAddKnjiga;
  */
 public class FrmMain extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmMain
-     */
+    Bibliotekar ulogovani;
+    Clan clan;
+    Knjiga knjiga;
+    
     public FrmMain() {
         initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Glavna klijentska forma");
+        this.ulogovani=Communication.getInstance().getUlogovani();
+        lblUlogovani.setText("Ulogovani bibliotekar"+ulogovani);
+        tblClan.setModel(new TableModelClan());
+        
+        refreshTableClan();
+        
     }
 
     /**
@@ -28,6 +48,27 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblUlogovani = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        txtPretragaClan = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblClan = new javax.swing.JTable();
+        btnIzmeniClan = new javax.swing.JButton();
+        btnObrisiClan = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtClan = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        txtPretragaKnjige = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblKnjiga = new javax.swing.JTable();
+        btnIzmeniKnjiga = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblStavka = new javax.swing.JTable();
+        btnDodaj = new javax.swing.JButton();
+        btnObrisi = new javax.swing.JButton();
+        btnSacuvaj = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         mClan = new javax.swing.JMenu();
         miNoviClan = new javax.swing.JMenuItem();
@@ -38,9 +79,225 @@ public class FrmMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        lblUlogovani.setText("Ulogovani bibliotekar:");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Pozajmica"));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga clana"));
+
+        txtPretragaClan.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPretragaClanKeyReleased(evt);
+            }
+        });
+
+        tblClan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblClan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClanMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblClan);
+
+        btnIzmeniClan.setText("Izmenite izabranog clana");
+        btnIzmeniClan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIzmeniClanActionPerformed(evt);
+            }
+        });
+
+        btnObrisiClan.setText("Obrisi clana");
+        btnObrisiClan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiClanActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Izabrani clan:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(84, 84, 84)
+                        .addComponent(txtClan))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPretragaClan, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(btnIzmeniClan)
+                                    .addGap(131, 131, 131)
+                                    .addComponent(btnObrisiClan))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 9, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtPretragaClan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIzmeniClan)
+                    .addComponent(btnObrisiClan))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtClan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Stavka pozajmice"));
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga knjige"));
+
+        tblKnjiga.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblKnjiga);
+
+        btnIzmeniKnjiga.setText("Izmeni knjigu");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnIzmeniKnjiga)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtPretragaKnjige)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)))
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtPretragaKnjige, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnIzmeniKnjiga)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tblStavka.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tblStavka);
+
+        btnDodaj.setText("Dodaj stavku");
+
+        btnObrisi.setText("Obrisi stavku");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDodaj)
+                            .addComponent(btnObrisi))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(btnDodaj)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnObrisi)))
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
+
+        btnSacuvaj.setText("SACUVAJ");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(450, 450, 450)
+                .addComponent(btnSacuvaj)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSacuvaj)
+                .addGap(20, 20, 20))
+        );
+
         mClan.setText("Clan");
 
         miNoviClan.setText("Dodaj novog clana");
+        miNoviClan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miNoviClanActionPerformed(evt);
+            }
+        });
         mClan.add(miNoviClan);
 
         jMenuBar1.add(mClan);
@@ -75,11 +332,21 @@ public class FrmMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblUlogovani))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 270, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblUlogovani)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -90,8 +357,75 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_miPozajmicaActionPerformed
 
     private void miNovaKnjigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNovaKnjigaActionPerformed
-  new FrmAddKnjiga(this, true).setVisible(true);
+
     }//GEN-LAST:event_miNovaKnjigaActionPerformed
+
+    private void miNoviClanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNoviClanActionPerformed
+     new FrmAddClan(this, true).setVisible(true);
+    }//GEN-LAST:event_miNoviClanActionPerformed
+
+    private void txtPretragaClanKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPretragaClanKeyReleased
+       String parametar = txtPretragaClan.getText();
+        TableModelClan tmClan = (TableModelClan) tblClan.getModel();
+        tmClan.setParametar(parametar);
+        if (tmClan.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Sistem ne moze da nadje clanove po zadatoj vrednosti",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_txtPretragaClanKeyReleased
+
+    private void btnIzmeniClanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniClanActionPerformed
+        int rowIndex=tblClan.getSelectedRow();
+        if(rowIndex>=0){
+            TableModelClan tm=(TableModelClan) tblClan.getModel();
+            Clan clan= tm.getClan(rowIndex);
+            JOptionPane.showMessageDialog(this,"Sistem je ucitao clana.");
+            new FrmUpdateClan(this, true,clan).setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this,"Sistem ne moze da ucita clana","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnIzmeniClanActionPerformed
+
+    private void btnObrisiClanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiClanActionPerformed
+
+        TableModelClan tmClan = (TableModelClan) tblClan.getModel();
+        int rowIndex = tblClan.getSelectedRow();
+        if (rowIndex >= 0) {
+            int deleteYesNo = JOptionPane.showConfirmDialog(this,
+                    "Da li ste sigurni da zelite da obrisete ovog clana?", "Konfirmacija", JOptionPane.YES_NO_OPTION);
+
+            if (deleteYesNo == JOptionPane.NO_OPTION) {
+                return;
+            }
+
+            if (deleteYesNo == JOptionPane.YES_OPTION) {
+                try {
+                    Clan clan = tmClan.getClan(rowIndex);
+                    
+                    ClientController.getInstance().deleteClan(clan);
+                    refreshTableClan();
+                    JOptionPane.showMessageDialog(this, "Sistem je obrisao clana.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Sistem ne moze da obrise clana", "Error", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da obrise clana", "Error", JOptionPane.ERROR_MESSAGE);
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnObrisiClanActionPerformed
+
+    private void tblClanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClanMouseClicked
+     int selectedRow=tblClan.getSelectedRow();
+        
+        if(selectedRow>-1){
+            TableModelClan tmc= (TableModelClan) tblClan.getModel();
+            clan=tmc.getListItem(selectedRow);
+            txtClan.setText(clan.toString());
+        }
+    }//GEN-LAST:event_tblClanMouseClicked
 
     /**
      * @param args the command line arguments
@@ -129,12 +463,39 @@ public class FrmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDodaj;
+    private javax.swing.JButton btnIzmeniClan;
+    private javax.swing.JButton btnIzmeniKnjiga;
+    private javax.swing.JButton btnObrisi;
+    private javax.swing.JButton btnObrisiClan;
+    private javax.swing.JButton btnSacuvaj;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblUlogovani;
     private javax.swing.JMenu mClan;
     private javax.swing.JMenu mKnjiga;
     private javax.swing.JMenu mPozajmica;
     private javax.swing.JMenuItem miNovaKnjiga;
     private javax.swing.JMenuItem miNoviClan;
     private javax.swing.JMenuItem miPozajmica;
+    private javax.swing.JTable tblClan;
+    private javax.swing.JTable tblKnjiga;
+    private javax.swing.JTable tblStavka;
+    private javax.swing.JTextField txtClan;
+    private javax.swing.JTextField txtPretragaClan;
+    private javax.swing.JTextField txtPretragaKnjige;
     // End of variables declaration//GEN-END:variables
+
+public void refreshTableClan() {
+        TableModelClan tmClan= (TableModelClan) tblClan.getModel();
+        tmClan.refreshTable();
+    }
+
 }

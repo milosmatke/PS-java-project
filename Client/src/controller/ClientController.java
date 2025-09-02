@@ -10,9 +10,11 @@ import communication.Request;
 import communication.Response;
 import communication.ResponseType;
 import domain.Bibliotekar;
+import domain.Clan;
 import domain.Knjiga;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 /**
  *
@@ -57,7 +59,23 @@ public class ClientController {
         
     }
 
-    public void addKnjiga(Knjiga knjiga) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void addKnjiga(Knjiga knjiga) throws Exception {
+       sendRequest(Operations.ADD_KNJIGA, knjiga);
+    }
+
+    public void addClan(Clan clan) throws Exception {
+        sendRequest(Operations.ADD_CLAN, clan);
+    }
+
+    public List<Clan> getAllClan() throws Exception {
+         return (List<Clan>) sendRequest(Operations.GET_ALL_CLAN, null);
+    }
+
+    public void updateClan(Clan clan) throws Exception {
+         sendRequest(Operations.UPDATE_CLAN, clan);
+    }
+
+    public void deleteClan(Clan clan) throws Exception {
+        sendRequest(Operations.DELETE_CLAN, clan);
     }
 }
