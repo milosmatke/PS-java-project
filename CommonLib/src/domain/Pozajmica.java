@@ -94,7 +94,7 @@ public class Pozajmica implements AbstractDomainObject{
         while (rs.next()) {
             Clan c = new Clan(
                 rs.getLong("c.id"),
-                rs.getString("c.broj_clanske"),
+                
                 rs.getString("c.ime"),
                 rs.getString("c.prezime"),
                 rs.getString("c.email"),

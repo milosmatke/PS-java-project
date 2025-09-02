@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Clan implements AbstractDomainObject{
    private long id;
-    private String brojClanske;   // broj_clanske
+    
     private String ime;
     private String prezime;
     private String email;
@@ -28,9 +28,9 @@ public class Clan implements AbstractDomainObject{
 
     public Clan() {}
 
-    public Clan(long id, String brojClanske, String ime, String prezime, String email,
+    public Clan(long id, String ime, String prezime, String email,
                 String telefon, LocalDate datumIsteka, String status, LocalDateTime createdAt) {
-        this.id=id; this.brojClanske=brojClanske; this.ime=ime; this.prezime=prezime;
+        this.id=id; this.ime=ime; this.prezime=prezime;
         this.email=email; this.telefon=telefon; this.datumIsteka=datumIsteka;
         this.status=status; this.createdAt=createdAt;
     }
@@ -72,12 +72,12 @@ public class Clan implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-       return " (broj_clanske, ime, prezime, email, telefon, datum_isteka, status) ";
+       return " (ime, prezime, email, telefon, datum_isteka, status) ";
     }
 
     @Override
     public String getInsertValues() {
-       return "'" + brojClanske + "', '" + ime + "', '" + prezime + "', " +
+       return "'" + ime + "', '" + prezime + "', " +
                (email==null? "NULL" : "'" + email + "'") + ", " +
                (telefon==null? "NULL" : "'" + telefon + "'") + ", " +
                "'" + datumIsteka + "', '" + status + "'";
@@ -85,8 +85,8 @@ public class Clan implements AbstractDomainObject{
 
     @Override
     public String getUpdateValues() {
-        return " broj_clanske='" + brojClanske + "'" +
-               ", ime='" + ime + "'" +
+        return 
+               "ime='" + ime + "'" +
                ", prezime='" + prezime + "'" +
                ", email=" + (email==null? "NULL" : "'" + email + "'") +
                ", telefon=" + (telefon==null? "NULL" : "'" + telefon + "'") +
@@ -120,7 +120,7 @@ public class Clan implements AbstractDomainObject{
         while (rs.next()) {
             list.add(new Clan(
                 rs.getLong("id"),
-                rs.getString("broj_clanske"),
+                
                 rs.getString("ime"),
                 rs.getString("prezime"),
                 rs.getString("email"),
@@ -141,13 +141,7 @@ public class Clan implements AbstractDomainObject{
         this.id = id;
     }
 
-    public String getBrojClanske() {
-        return brojClanske;
-    }
-
-    public void setBrojClanske(String brojClanske) {
-        this.brojClanske = brojClanske;
-    }
+   
 
     public String getIme() {
         return ime;

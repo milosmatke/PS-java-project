@@ -18,16 +18,16 @@ import java.util.List;
 public class StavkaPozajmice implements AbstractDomainObject{
     
     private Pozajmica pozajmica; // PK deo 1
-    private Primerak primerak;   // PK deo 2
+    private Knjiga knjiga;   // PK deo 2
     private LocalDate datumVracanja; // moze biti null dok je zaduzen
     private String statusStavke;     // 'zaduzen','vracen','izgubljen','ostecen'
     private BigDecimal kazna;
 
     public StavkaPozajmice() {}
 
-    public StavkaPozajmice(Pozajmica pozajmica, Primerak primerak,
+    public StavkaPozajmice(Pozajmica pozajmica, Knjiga knjiga,
                            LocalDate datumVracanja, String statusStavke, BigDecimal kazna) {
-        this.pozajmica = pozajmica; this.primerak = primerak;
+        this.pozajmica = pozajmica; this.knjiga = knjiga;
         this.datumVracanja = datumVracanja; this.statusStavke = statusStavke; this.kazna = kazna;
     }
     
@@ -39,12 +39,12 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (pozajmica_id, primerak_id, datum_vracanja, status_stavke, kazna) ";
+        return " (pozajmica_id, knjiga_id, datum_vracanja, status_stavke, kazna) ";
     }
 
     @Override
     public String getInsertValues() {
-        return pozajmica.getId() + ", " + primerak.getId() + ", " +
+        return pozajmica.getId() + ", " + knjiga.getId() + ", " +
                (datumVracanja==null? "NULL" : "'" + datumVracanja + "'") + ", " +
                "'" + statusStavke + "', " +
                (kazna==null? "0.00" : kazna.toPlainString());
@@ -59,7 +59,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String getPrimaryKeyValue() {
-         return " pozajmica_id=" + pozajmica.getId() + " AND primerak_id=" + primerak.getId();
+         return " pozajmica_id=" + pozajmica.getId() + " AND knjiga_id=" + knjiga.getId();
     }
 
     @Override
@@ -70,8 +70,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
     @Override
     public String join() {
         return " JOIN pozajmica p ON p.id = sp.pozajmica_id " +
-               " JOIN primerak pr ON pr.id = sp.primerak_id " +
-               " JOIN knjiga k ON k.id = pr.knjiga_id ";
+               " JOIN knjiga k ON pr.id = sp.knjiga_id " ;
     }
 
     @Override
@@ -92,14 +91,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
                 rs.getString("k.zanr"),
                     rs.getBoolean("k.active")
             );
-            Primerak pr = new Primerak(
-                rs.getLong("pr.id"),
-                k,
-                rs.getString("pr.inventarski_broj"),
-                rs.getString("pr.stanje"),
-                rs.getString("pr.dostupnost"),
-                rs.getString("pr.lokacija")
-            );
+            
             Pozajmica p = new Pozajmica(
                 rs.getLong("p.id"),
                 null, null,
@@ -111,7 +103,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
             );
             list.add(new StavkaPozajmice(
                 p,
-                pr,
+                k,
                 rs.getDate("sp.datum_vracanja") == null ? null : rs.getDate("sp.datum_vracanja").toLocalDate(),
                 rs.getString("sp.status_stavke"),
                 rs.getBigDecimal("sp.kazna")
@@ -128,12 +120,12 @@ public class StavkaPozajmice implements AbstractDomainObject{
         this.pozajmica = pozajmica;
     }
 
-    public Primerak getPrimerak() {
-        return primerak;
+    public Knjiga getPrimerak() {
+        return knjiga;
     }
 
-    public void setPrimerak(Primerak primerak) {
-        this.primerak = primerak;
+    public void setPrimerak(Knjiga knjiga) {
+        this.knjiga = knjiga;
     }
 
     public LocalDate getDatumVracanja() {
