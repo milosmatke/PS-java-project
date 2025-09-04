@@ -4,13 +4,16 @@
  */
 package controller;
 
+import domain.Autor;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
+import so.autor.SOGetAllAutor;
 import so.clan.SOAddClan;
 import so.clan.SODeleteClan;
 import so.clan.SOGetAllClan;
 import so.clan.SOUpdateClan;
+import so.knjiga.SOAddKnjiga;
 import so.login.SOLogin;
 
 /**
@@ -60,5 +63,16 @@ public class ServerController {
         SODeleteClan so=new SODeleteClan();
         so.templateExecute(clan);
         
+    }
+
+    public Object getAllAutor() throws Exception {
+        SOGetAllAutor so= new SOGetAllAutor();
+        so.templateExecute(new Autor());
+        return so.getLista();
+    }
+
+    public void addKnjiga(Knjiga knjiga) throws Exception {
+        SOAddKnjiga so= new SOAddKnjiga();
+        so.templateExecute(knjiga);
     }
 }

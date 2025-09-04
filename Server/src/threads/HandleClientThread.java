@@ -67,6 +67,13 @@ public class HandleClientThread extends Thread{
                 case Operations.DELETE_CLAN:
                     ServerController.getInstance().deleteClan((Clan)request.getArgument());
                     break;
+                    
+                case Operations.GET_ALL_AUTOR:
+                    response.setResult(ServerController.getInstance().getAllAutor());
+                    break;  
+                case Operations.ADD_KNJIGA:
+                    ServerController.getInstance().addKnjiga((Knjiga)request.getArgument());
+                    break;    
                 
                 default:
                     return null;
