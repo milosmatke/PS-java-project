@@ -74,7 +74,12 @@ public class HandleClientThread extends Thread{
                 case Operations.ADD_KNJIGA:
                     ServerController.getInstance().addKnjiga((Knjiga)request.getArgument());
                     break;    
-                
+                case Operations.GET_ALL_KNJIGA:
+                    response.setResult(ServerController.getInstance().getAllKnjiga());
+                    break;
+                case Operations.UPDATE_KNJIGA:
+                    ServerController.getInstance().updateKnjiga((Knjiga) request.getArgument());
+                    break;    
                 default:
                     return null;
             }

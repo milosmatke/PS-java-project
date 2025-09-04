@@ -14,6 +14,8 @@ import so.clan.SODeleteClan;
 import so.clan.SOGetAllClan;
 import so.clan.SOUpdateClan;
 import so.knjiga.SOAddKnjiga;
+import so.knjiga.SOGetAllKnjiga;
+import so.knjiga.SOUpdateKnjiga;
 import so.login.SOLogin;
 
 /**
@@ -73,6 +75,17 @@ public class ServerController {
 
     public void addKnjiga(Knjiga knjiga) throws Exception {
         SOAddKnjiga so= new SOAddKnjiga();
+        so.templateExecute(knjiga);
+    }
+
+    public Object getAllKnjiga() throws Exception {
+        SOGetAllKnjiga so= new SOGetAllKnjiga();
+        so.templateExecute(new Knjiga());
+        return so.getLista();
+    }
+
+    public void updateKnjiga(Knjiga knjiga) throws Exception {
+        SOUpdateKnjiga so=new SOUpdateKnjiga();
         so.templateExecute(knjiga);
     }
 }
