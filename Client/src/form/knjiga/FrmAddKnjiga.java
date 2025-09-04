@@ -172,19 +172,16 @@ public class FrmAddKnjiga extends javax.swing.JDialog {
                     JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            int kolicina=Integer.parseInt(txtKolicina.getText());
-            for(int i=1;i<=kolicina;i++){
+            
                 
                 Knjiga k=new Knjiga(-1, txtNaslov.getText(), txtIzdavac.getText(), Integer.parseInt(txtGodina.getText()),
-                        txtZanr.getText(), (Autor) cmbAutor.getSelectedItem(), true);
+                        txtZanr.getText(), (Autor) cmbAutor.getSelectedItem(), Integer.parseInt(txtKolicina.getText()));
                 ClientController.getInstance().addKnjiga(k);
-            }
-            if(kolicina==1){
+            
+            
                 JOptionPane.showMessageDialog(this,"Sistem je kreirao novu knjigu");
-            }
-            else{
-                JOptionPane.showMessageDialog(this,"Sistem je kreirao novu knjige");
-            }
+            
+            
             
             
         } catch (NumberFormatException ex) {

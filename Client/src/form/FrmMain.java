@@ -12,7 +12,9 @@ import domain.Knjiga;
 import form.clan.FrmAddClan;
 import form.clan.FrmUpdateClan;
 import form.components.TableModelClan;
+import form.components.TableModelKnjiga;
 import form.knjiga.FrmAddKnjiga;
+import form.knjiga.FrmUpdateKnjiga;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,8 +36,10 @@ public class FrmMain extends javax.swing.JFrame {
         this.ulogovani=Communication.getInstance().getUlogovani();
         lblUlogovani.setText("Ulogovani bibliotekar: "+ulogovani);
         tblClan.setModel(new TableModelClan());
+        tblKnjiga.setModel(new TableModelKnjiga());
         
         refreshTableClan();
+        refreshTableKnjiga();
         
     }
 
@@ -172,6 +176,12 @@ public class FrmMain extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Pretraga knjige"));
 
+        txtPretragaKnjige.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPretragaKnjigeKeyReleased(evt);
+            }
+        });
+
         tblKnjiga.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -186,6 +196,11 @@ public class FrmMain extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblKnjiga);
 
         btnIzmeniKnjiga.setText("Izmeni knjigu");
+        btnIzmeniKnjiga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIzmeniKnjigaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -457,6 +472,30 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jmiOdjavaActionPerformed
 
+    private void txtPretragaKnjigeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPretragaKnjigeKeyReleased
+       String parametar = txtPretragaKnjige.getText();
+       TableModelKnjiga tmKnjiga = (TableModelKnjiga) tblKnjiga.getModel();
+        tmKnjiga.setParametar(parametar);
+        if (tmKnjiga.getRowCount() == 0) {
+          JOptionPane.showMessageDialog(this,
+                   "Sistem ne moze da nadje knjige po zadatoj vrednosti",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_txtPretragaKnjigeKeyReleased
+
+    private void btnIzmeniKnjigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniKnjigaActionPerformed
+     int selectedRow = tblKnjiga.getSelectedRow();
+        if (selectedRow >= 0) {
+            TableModelKnjiga tm=(TableModelKnjiga) tblKnjiga.getModel();
+            Knjiga k=tm.getKnjiga(selectedRow);
+            JOptionPane.showMessageDialog(this,"Sistem je ucitao knjigu.");
+            new FrmUpdateKnjiga(this, true,k).setVisible(true);
+        }else {
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da ucita knjigu","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnIzmeniKnjigaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -528,6 +567,13 @@ public class FrmMain extends javax.swing.JFrame {
 public void refreshTableClan() {
         TableModelClan tmClan= (TableModelClan) tblClan.getModel();
         tmClan.refreshTable();
+    }
+
+    public void refreshTableKnjiga() {
+       
+        TableModelKnjiga tmKnjiga= (TableModelKnjiga) tblKnjiga.getModel();
+        tmKnjiga.refreshTable();
+    
     }
 
 }

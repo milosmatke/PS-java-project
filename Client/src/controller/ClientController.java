@@ -83,4 +83,13 @@ public class ClientController {
     public List<Autor> getAllAutor() throws Exception {
         return (List<Autor>) sendRequest(Operations.GET_ALL_AUTOR,null);
     }
+
+
+    public List<Knjiga> getAllKnjiga() throws Exception {
+       return (List<Knjiga>) sendRequest(Operations.GET_ALL_KNJIGA, null);
+    }
+
+    public void updateKnjiga(Knjiga k) throws Exception {
+        sendRequest(Operations.UPDATE_KNJIGA, k);
+    }
 }

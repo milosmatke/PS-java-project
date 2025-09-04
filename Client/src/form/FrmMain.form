@@ -370,6 +370,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="txtPretragaKnjige">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPretragaKnjigeKeyReleased"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane2">
                   <AuxValues>
@@ -396,6 +399,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Izmeni knjigu"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIzmeniKnjigaActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
