@@ -372,6 +372,7 @@ public class FrmMain extends javax.swing.JFrame {
 
     private void miNovaKnjigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNovaKnjigaActionPerformed
 
+        new FrmAddKnjiga(this, true).setVisible(true);
     }//GEN-LAST:event_miNovaKnjigaActionPerformed
 
     private void miNoviClanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miNoviClanActionPerformed

@@ -9,6 +9,7 @@ import communication.Operations;
 import communication.Request;
 import communication.Response;
 import communication.ResponseType;
+import domain.Autor;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
@@ -77,5 +78,9 @@ public class ClientController {
 
     public void deleteClan(Clan clan) throws Exception {
         sendRequest(Operations.DELETE_CLAN, clan);
+    }
+
+    public List<Autor> getAllAutor() throws Exception {
+        return (List<Autor>) sendRequest(Operations.GET_ALL_AUTOR,null);
     }
 }
