@@ -77,20 +77,18 @@ public class StavkaPozajmice implements AbstractDomainObject{
     public String condition() {
         return "";
     }
+    
 
     @Override
     public List<AbstractDomainObject> getAll(ResultSet rs) throws SQLException {
         ArrayList<AbstractDomainObject> list = new ArrayList<>();
         while (rs.next()) {
-            Knjiga k = new Knjiga(
-                rs.getLong("k.id"),
-                rs.getString("k.isbn"),
-                rs.getString("k.naslov"),
-                rs.getString("k.izdavac"),
-                (Integer)(rs.getObject("k.godina_izdanja")==null?null:rs.getInt("k.godina_izdanja")),
-                rs.getString("k.zanr"),
-                    rs.getBoolean("k.active")
-            );
+            Autor autor = new Autor(rs.getLong("autorID"),
+                    rs.getString("ime"), rs.getString("prezime"));
+            Knjiga k= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac")
+                    ,rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getBoolean("dostupna"));
+
+            
             
             Pozajmica p = new Pozajmica(
                 rs.getLong("p.id"),

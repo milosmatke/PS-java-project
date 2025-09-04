@@ -18,24 +18,31 @@ import java.util.Map;
 public class Knjiga implements AbstractDomainObject{
     
     private long id;
-    private String isbn;
     private String naslov;
     private String izdavac;
     private Integer godinaIzdanja;     // YEAR
     private String zanr;
+    private Autor autor;
     private boolean dostupna;
 
     // M:N → lista autora (puni se kroz JOIN na knjiga_autor + autor)
     private List<Autor> autori = new ArrayList<>();
 
-    public Knjiga() {}
-
-    public Knjiga(long id, String isbn, String naslov, String izdavac,
-                  Integer godinaIzdanja, String kategorija, boolean dostupna) {
-        this.id = id; this.isbn = isbn; this.naslov = naslov; this.izdavac = izdavac;
-        this.godinaIzdanja = godinaIzdanja; this.zanr = kategorija;
-         this.dostupna = dostupna;
+    public Knjiga() {
     }
+
+    public Knjiga(long id, String naslov, String izdavac, Integer godinaIzdanja, String zanr, Autor autor, boolean dostupna) {
+        this.id = id;
+        this.naslov = naslov;
+        this.izdavac = izdavac;
+        this.godinaIzdanja = godinaIzdanja;
+        this.zanr = zanr;
+        this.autor = autor;
+        this.dostupna = dostupna;
+    }
+
+    
+   
     
 
     @Override
@@ -74,27 +81,26 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (isbn, naslov, izdavac, godina_izdanja, kategorija, signatura, dostupna) ";
+        return " (naslov, izdavac, dostupna, autor_id, godinaIzdanja,zanr) ";
     }
 
     @Override
     public String getInsertValues() {
-        return "'" + (isbn==null?"":isbn) + "', '" + naslov + "', '" + (izdavac==null?"":izdavac) + "', " +
+        return "'" + naslov + "', '" + (izdavac==null?"":izdavac) + "', " +
+                (dostupna ? 1 : 0) + ", " +
+                autor.getId() + ", " +
                (godinaIzdanja==null? "NULL" : godinaIzdanja) + ", " +
-               (zanr==null? "NULL" : "'" + zanr + "'") + ", " +
-               
-               (dostupna ? 1 : 0);
+               (zanr==null? "NULL" : "'" + zanr + "'");
     }
 
     @Override
     public String getUpdateValues() {
-        return " isbn=" + (isbn==null? "NULL" : "'" + isbn + "'") +
-               ", naslov='" + naslov + "'" +
+        return "naslov='" + naslov + "'" +
                ", izdavac=" + (izdavac==null? "NULL" : "'" + izdavac + "'") +
+                ", dostupna=" + (dostupna ? 1 : 0) +
+                ", autor_id=" + autor.getId()+
                ", godina_izdanja=" + (godinaIzdanja==null? "NULL" : godinaIzdanja) +
-               ", kategorija=" + (zanr==null? "NULL" : "'" + zanr + "'") +
-               
-               ", dostupna=" + (dostupna ? 1 : 0);
+               ", zanr=" + (zanr==null? "NULL" : "'" + zanr + "'");
     }
 
     @Override
@@ -109,8 +115,7 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String join() {
-        return " LEFT JOIN knjiga_autor ka ON ka.knjiga_id = k.id " +
-               " LEFT JOIN autor a ON a.id = ka.autor_id ";
+        return "INNER JOIN Autor a ON (k.autor_id = a.id) ";
     }
 
     @Override
@@ -120,36 +125,21 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public List<AbstractDomainObject> getAll(ResultSet rs) throws SQLException {
-        // grupišemo po k.id da ne dupliramo knjigu kada ima više autora
-        Map<Long, Knjiga> map = new LinkedHashMap<>();
+         ArrayList<AbstractDomainObject> lista = new ArrayList<>();
+
         while (rs.next()) {
-            long kId = rs.getLong("k.id");
-            Knjiga k = map.get(kId);
-            if (k == null) {
-                k = new Knjiga(
-                    kId,
-                    rs.getString("k.isbn"),
-                    rs.getString("k.naslov"),
-                    rs.getString("k.izdavac"),
-                    (Integer) (rs.getObject("k.godina_izdanja") == null ? null : rs.getInt("k.godina_izdanja")),
-                    rs.getString("k.kategorija"),
-                    
-                    rs.getBoolean("k.dostupna")
-                );
-                map.put(kId, k);
-            }
-            Long aId = (Long) rs.getObject("a.id");
-            if (aId != null) {
-                Autor a = new Autor(aId, rs.getString("a.ime"), rs.getString("a.prezime"));
-                // izbegni duplikate autora
-                boolean exists = false;
-                for (Autor ex : k.getAutori()) {
-                    if (ex.getId() == a.getId()) { exists = true; break; }
-                }
-                if (!exists) k.getAutori().add(a);
-            }
+            
+            Autor autor = new Autor(rs.getLong("id"),
+                    rs.getString("ime"), rs.getString("prezime"));
+            Knjiga knjiga= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac"),rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getBoolean("dostupna"));
+
+            
+
+            lista.add(knjiga);
         }
-        return new ArrayList<>(map.values());
+
+        rs.close();
+        return lista;
     }
 
     public long getId() {
@@ -160,13 +150,7 @@ public class Knjiga implements AbstractDomainObject{
         this.id = id;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+    
 
     public String getNaslov() {
         return naslov;
@@ -216,6 +200,14 @@ public class Knjiga implements AbstractDomainObject{
 
     public void setAutori(List<Autor> autori) {
         this.autori = autori;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
     
 }
