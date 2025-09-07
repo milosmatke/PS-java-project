@@ -74,7 +74,7 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
 
         jLabel3.setText("Naslov:");
 
-        txtGodina.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtGodina.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         jLabel4.setText("Zanr:");
 
@@ -173,12 +173,16 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
                 return;
             }
 
-            Knjiga k=new Knjiga(-1, txtNaslov.getText(), txtIzdavac.getText(), Integer.parseInt(txtGodina.getText()),
+            Knjiga k=new Knjiga(knjiga.getId(), txtNaslov.getText(), txtIzdavac.getText(), Integer.parseInt(txtGodina.getText()),
                 txtZanr.getText(), (Autor) cmbAutor.getSelectedItem(), Integer.parseInt(txtKolicina.getText()));
+           
+            
+           
             
             if(k.getId()==knjiga.getId() && k.getNaslov().equals(knjiga.getNaslov())&&k.getIzdavac().equals(knjiga.getIzdavac())&&
                    k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getAutor().getId()==knjiga.getAutor().getId()
                     &&k.getKolicina()==knjiga.getKolicina() ){
+                
                 JOptionPane.showMessageDialog(this,"Izmena nije izvrsena.");
                 this.dispose();
                 return;
