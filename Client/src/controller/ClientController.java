@@ -13,6 +13,7 @@ import domain.Autor;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
+import domain.Pozajmica;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -91,5 +92,9 @@ public class ClientController {
 
     public void updateKnjiga(Knjiga k) throws Exception {
         sendRequest(Operations.UPDATE_KNJIGA, k);
+    }
+
+    public void addPozajmica(Pozajmica pozajmica) throws Exception {
+        sendRequest(Operations.ADD_POZAJMICA, pozajmica);
     }
 }

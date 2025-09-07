@@ -9,12 +9,20 @@ import controller.ClientController;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
+import domain.Pozajmica;
+import domain.StavkaPozajmice;
 import form.clan.FrmAddClan;
 import form.clan.FrmUpdateClan;
 import form.components.TableModelClan;
 import form.components.TableModelKnjiga;
+import form.components.TableModelStavke;
 import form.knjiga.FrmAddKnjiga;
 import form.knjiga.FrmUpdateKnjiga;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -37,6 +45,7 @@ public class FrmMain extends javax.swing.JFrame {
         lblUlogovani.setText("Ulogovani bibliotekar: "+ulogovani);
         tblClan.setModel(new TableModelClan());
         tblKnjiga.setModel(new TableModelKnjiga());
+        tblStavka.setModel(new TableModelStavke());
         
         refreshTableClan();
         refreshTableKnjiga();
@@ -62,6 +71,10 @@ public class FrmMain extends javax.swing.JFrame {
         btnObrisiClan = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtClan = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtDatumOd = new javax.swing.JFormattedTextField();
+        txtDatumDo = new javax.swing.JFormattedTextField();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         txtPretragaKnjige = new javax.swing.JTextField();
@@ -131,6 +144,14 @@ public class FrmMain extends javax.swing.JFrame {
 
         jLabel1.setText("Izabrani clan:");
 
+        jLabel2.setText("Datum od:");
+
+        jLabel3.setText("Datum do:");
+
+        txtDatumOd.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd.MM.yyyy"))));
+
+        txtDatumDo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd.MM.yyyy"))));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -151,7 +172,15 @@ public class FrmMain extends javax.swing.JFrame {
                                     .addGap(131, 131, 131)
                                     .addComponent(btnObrisiClan))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 9, Short.MAX_VALUE)))
+                        .addGap(0, 9, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(101, 101, 101)
+                        .addComponent(txtDatumOd))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(101, 101, 101)
+                        .addComponent(txtDatumDo)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -169,6 +198,14 @@ public class FrmMain extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtClan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -241,8 +278,18 @@ public class FrmMain extends javax.swing.JFrame {
         jScrollPane3.setViewportView(tblStavka);
 
         btnDodaj.setText("Dodaj stavku");
+        btnDodaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDodajActionPerformed(evt);
+            }
+        });
 
         btnObrisi.setText("Obrisi stavku");
+        btnObrisi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -277,6 +324,11 @@ public class FrmMain extends javax.swing.JFrame {
         );
 
         btnSacuvaj.setText("SACUVAJ");
+        btnSacuvaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSacuvajActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -496,6 +548,85 @@ public class FrmMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnIzmeniKnjigaActionPerformed
 
+    private void btnDodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajActionPerformed
+       TableModelKnjiga tmk = (TableModelKnjiga) tblKnjiga.getModel();
+        int selectedRow = tblKnjiga.getSelectedRow();
+        if (selectedRow >= 0) {
+            try {
+                knjiga = tmk.getKnjiga(selectedRow);
+                if(knjiga.getKolicina()<=0){
+                    JOptionPane.showMessageDialog(this, "Sistem ne moze da doda stavku.","Error",
+                    JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                StavkaPozajmice stavka = new StavkaPozajmice(null, knjiga,-1);
+                
+                TableModelStavke tms = (TableModelStavke) tblStavka.getModel();
+                if (tms.getRowCount() > 0) {
+                    if (tms.postojiKnjiga(knjiga)) {
+                        JOptionPane.showMessageDialog(this, "Vec ste uneli ovu knjigu!","Error",JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                tms.dodajStavku(stavka);
+                tmk.smanjiKolicinu(selectedRow);
+                
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Sistem ne moze da ucita stavku.", "Error", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da ucita stavku.","Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDodajActionPerformed
+
+    private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
+        TableModelStavke tmStavke = (TableModelStavke) tblStavka.getModel();
+        int rowIndex = tblStavka.getSelectedRow();
+        if (rowIndex >= 0) {
+            StavkaPozajmice stavka= tmStavke.getStavkaPozajmice(rowIndex);
+            knjiga=stavka.getKnjiga();
+            TableModelKnjiga tmk = (TableModelKnjiga) tblKnjiga.getModel();
+            tmk.povecajKolicinu(knjiga);
+            tmStavke.deleteStavka(rowIndex);
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da obrise stavku","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnObrisiActionPerformed
+
+    private void btnSacuvajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacuvajActionPerformed
+       try {
+            
+             if(txtClan.getText().isEmpty() || txtDatumOd.getText().isEmpty() || 
+                    txtDatumDo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this,"Sistem ne moze da kreira uslugu","Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+             SimpleDateFormat sdf=new SimpleDateFormat("dd.MM.yyyy");
+           
+            
+            TableModelStavke tmStavke= (TableModelStavke) tblStavka.getModel();
+            
+            Pozajmica pozajmica=new Pozajmica(-1, clan, ulogovani,sdf.parse(txtDatumOd.getText()), sdf.parse(txtDatumDo.getText()), (ArrayList<StavkaPozajmice>) tmStavke.getListaStavki());
+                    
+                 
+            
+            ClientController.getInstance().addPozajmica(pozajmica);
+            ClientController.getInstance().updateKnjiga(knjiga);
+            JOptionPane.showMessageDialog(this,"Sistem je kreirao pozajmicu");
+            resetForm();
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,"Sistem ne moze da kreira upozajmicu","Error",
+                    JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_btnSacuvajActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -539,6 +670,8 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JButton btnObrisiClan;
     private javax.swing.JButton btnSacuvaj;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -560,6 +693,8 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JTable tblKnjiga;
     private javax.swing.JTable tblStavka;
     private javax.swing.JTextField txtClan;
+    private javax.swing.JFormattedTextField txtDatumDo;
+    private javax.swing.JFormattedTextField txtDatumOd;
     private javax.swing.JTextField txtPretragaClan;
     private javax.swing.JTextField txtPretragaKnjige;
     // End of variables declaration//GEN-END:variables
@@ -574,6 +709,15 @@ public void refreshTableClan() {
         TableModelKnjiga tmKnjiga= (TableModelKnjiga) tblKnjiga.getModel();
         tmKnjiga.refreshTable();
     
+    }
+
+    private void resetForm() {
+        txtClan.setText("");
+        txtDatumOd.setText("");
+        txtDatumDo.setText("");
+	TableModelStavke tmStavke = (TableModelStavke) tblStavka.getModel();
+        tmStavke.getListaStavki().clear();
+        tmStavke.fireTableDataChanged();
     }
 
 }
