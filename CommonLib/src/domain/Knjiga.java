@@ -7,9 +7,8 @@ package domain;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  *
@@ -20,25 +19,22 @@ public class Knjiga implements AbstractDomainObject{
     private long id;
     private String naslov;
     private String izdavac;
-    private Integer godinaIzdanja;     // YEAR
+    private int godinaIzdanja;     
     private String zanr;
     private Autor autor;
-    private boolean dostupna;
-
-    // M:N → lista autora (puni se kroz JOIN na knjiga_autor + autor)
-    private List<Autor> autori = new ArrayList<>();
+    private int kolicina;
 
     public Knjiga() {
     }
 
-    public Knjiga(long id, String naslov, String izdavac, Integer godinaIzdanja, String zanr, Autor autor, boolean dostupna) {
+    public Knjiga(long id, String naslov, String izdavac, int godinaIzdanja, String zanr, Autor autor, int kolicina) {
         this.id = id;
         this.naslov = naslov;
         this.izdavac = izdavac;
         this.godinaIzdanja = godinaIzdanja;
         this.zanr = zanr;
         this.autor = autor;
-        this.dostupna = dostupna;
+        this.kolicina=kolicina;
     }
 
     
@@ -47,7 +43,7 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String toString() {
-       return naslov+" "+ izdavac;
+       return naslov+": "+ autor.getIme()+" "+autor.getPrezime();
     }
 
     @Override
@@ -81,26 +77,23 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (naslov, izdavac, dostupna, autor_id, godinaIzdanja,zanr) ";
+        return " (naslov, izdavac, kolicina, autor_id, godinaIzdanja,zanr) ";
     }
 
     @Override
     public String getInsertValues() {
         return "'" + naslov + "', '" + (izdavac==null?"":izdavac) + "', " +
-                (dostupna ? 1 : 0) + ", " +
+                kolicina + ", " +
                 autor.getId() + ", " +
-               (godinaIzdanja==null? "NULL" : godinaIzdanja) + ", " +
+               godinaIzdanja + ", " +
                (zanr==null? "NULL" : "'" + zanr + "'");
     }
 
     @Override
     public String getUpdateValues() {
-        return "naslov='" + naslov + "'" +
-               ", izdavac=" + (izdavac==null? "NULL" : "'" + izdavac + "'") +
-                ", dostupna=" + (dostupna ? 1 : 0) +
-                ", autor_id=" + autor.getId()+
-               ", godina_izdanja=" + (godinaIzdanja==null? "NULL" : godinaIzdanja) +
-               ", zanr=" + (zanr==null? "NULL" : "'" + zanr + "'");
+        return  "naslov='"+naslov+"', izdavac='"+ izdavac+"', kolicina='"+ kolicina+ "', autor_id='"+ autor.getId()+
+                "', godinaIzdanja='"+ godinaIzdanja+"', zanr='" + zanr + "'";
+                         
     }
 
     @Override
@@ -131,7 +124,8 @@ public class Knjiga implements AbstractDomainObject{
             
             Autor autor = new Autor(rs.getLong("id"),
                     rs.getString("ime"), rs.getString("prezime"));
-            Knjiga knjiga= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac"),rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getBoolean("dostupna"));
+            Knjiga knjiga= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac"),
+                    rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getInt("kolicina"));
 
             
 
@@ -168,11 +162,11 @@ public class Knjiga implements AbstractDomainObject{
         this.izdavac = izdavac;
     }
 
-    public Integer getGodinaIzdanja() {
+    public int getGodinaIzdanja() {
         return godinaIzdanja;
     }
 
-    public void setGodinaIzdanja(Integer godinaIzdanja) {
+    public void setGodinaIzdanja(int godinaIzdanja) {
         this.godinaIzdanja = godinaIzdanja;
     }
 
@@ -186,21 +180,15 @@ public class Knjiga implements AbstractDomainObject{
 
     
 
-    public boolean isDostupna() {
-        return dostupna;
+    public int getKolicina() {
+        return kolicina;
     }
 
-    public void setDostupna(boolean dostupna) {
-        this.dostupna = dostupna;
+    public void setKolicina(int kolicina) {
+        this.kolicina = kolicina;
     }
 
-    public List<Autor> getAutori() {
-        return autori;
-    }
-
-    public void setAutori(List<Autor> autori) {
-        this.autori = autori;
-    }
+   
 
     public Autor getAutor() {
         return autor;

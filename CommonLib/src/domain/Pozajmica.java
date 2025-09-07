@@ -4,11 +4,11 @@
  */
 package domain;
 
-import java.math.BigDecimal;
+
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,20 +20,18 @@ public class Pozajmica implements AbstractDomainObject{
     private long id;
     private Clan clan;
     private Bibliotekar bibliotekar;
-    private LocalDateTime datumIzdavanja;
-    private LocalDate rokVracanja;
-    private String status;          // 'aktivna','zatvorena','otkazana'
-    private BigDecimal ukupnaKazna; // DECIMAL(10,2)
-    private String napomena;
+    private Date datumIzdavanja;
+    private Date rokVracanja;
+    private ArrayList<StavkaPozajmice> listaStavki;
 
     public Pozajmica() {}
 
     public Pozajmica(long id, Clan clan, Bibliotekar bibliotekar,
-                     LocalDateTime datumIzdavanja, LocalDate rokVracanja,
-                     String status, BigDecimal ukupnaKazna, String napomena) {
+                     Date datumIzdavanja, Date rokVracanja,
+                      ArrayList<StavkaPozajmice> listaStavki) {
         this.id=id; this.clan=clan; this.bibliotekar=bibliotekar;
         this.datumIzdavanja=datumIzdavanja; this.rokVracanja=rokVracanja;
-        this.status=status; this.ukupnaKazna=ukupnaKazna; this.napomena=napomena;
+        ; this.listaStavki=listaStavki;
     }
     
 
@@ -44,26 +42,20 @@ public class Pozajmica implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (clan_id, bibliotekar_id, datum_izdavanja, rok_vracanja, status, ukupna_kazna, napomena) ";
+        return " (clan_id, bibliotekar_id, datum_izdavanja, rok_vracanja) ";
     }
 
     @Override
     public String getInsertValues() {
-        return clan.getId() + ", " + bibliotekar.getId() + ", " +
-               "'" + datumIzdavanja + "', '" + rokVracanja + "', " +
-               "'" + status + "', " + (ukupnaKazna==null? "0.00" : ukupnaKazna.toPlainString()) + ", " +
-               (napomena==null? "NULL" : "'" + napomena + "'");
+        return "'"+clan.getId() + "', ' " + bibliotekar.getId() + "', '" +
+                new java.sql.Date(datumIzdavanja.getTime()) + "', '" + new java.sql.Date(rokVracanja.getTime()) + "'";
+        
+        
     }
 
     @Override
     public String getUpdateValues() {
-        return " clan_id=" + clan.getId() +
-               ", bibliotekar_id=" + bibliotekar.getId() +
-               ", datum_izdavanja='" + datumIzdavanja + "'" +
-               ", rok_vracanja='" + rokVracanja + "'" +
-               ", status='" + status + "'" +
-               ", ukupna_kazna=" + (ukupnaKazna==null? "0.00" : ukupnaKazna.toPlainString()) +
-               ", napomena=" + (napomena==null? "NULL" : "'" + napomena + "'");
+        return "clan_id='"+ clan.getId()+"', bibliotekar_id='"+bibliotekar.getId()+"',datum_izdavanja='" + new Timestamp(datumIzdavanja.getTime()) + "', rok_vracanja='" + new Timestamp(rokVracanja.getTime());
     }
 
     @Override
@@ -106,7 +98,7 @@ public class Pozajmica implements AbstractDomainObject{
             Bibliotekar b = new Bibliotekar(
                 rs.getLong("b.id"),
                 rs.getString("b.korisnicko_ime"),
-                rs.getString("b.lozinka_hash"),
+                rs.getString("b.lozinka"),
                 rs.getString("b.ime"),
                 rs.getString("b.prezime"),
                 rs.getString("b.uloga"),
@@ -116,11 +108,10 @@ public class Pozajmica implements AbstractDomainObject{
                 rs.getLong("p.id"),
                 c,
                 b,
-                rs.getTimestamp("p.datum_izdavanja").toLocalDateTime(),
-                rs.getDate("p.rok_vracanja").toLocalDate(),
-                rs.getString("p.status"),
-                rs.getBigDecimal("p.ukupna_kazna"),
-                rs.getString("p.napomena")
+                rs.getDate("p.datum_izdavanja"),
+                rs.getDate("p.rok_vracanja"),null
+               
+                
             ));
         }
         rs.close(); return list;
@@ -150,44 +141,32 @@ public class Pozajmica implements AbstractDomainObject{
         this.bibliotekar = bibliotekar;
     }
 
-    public LocalDateTime getDatumIzdavanja() {
+    public Date getDatumIzdavanja() {
         return datumIzdavanja;
     }
 
-    public void setDatumIzdavanja(LocalDateTime datumIzdavanja) {
+    public void setDatumIzdavanja(Date datumIzdavanja) {
         this.datumIzdavanja = datumIzdavanja;
     }
 
-    public LocalDate getRokVracanja() {
+    public Date getRokVracanja() {
         return rokVracanja;
     }
 
-    public void setRokVracanja(LocalDate rokVracanja) {
+    public void setRokVracanja(Date rokVracanja) {
         this.rokVracanja = rokVracanja;
     }
 
-    public String getStatus() {
-        return status;
+   
+
+    public ArrayList<StavkaPozajmice> getListaStavki() {
+        return listaStavki;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setListaStavki(ArrayList<StavkaPozajmice> listaStavki) {
+        this.listaStavki = listaStavki;
     }
 
-    public BigDecimal getUkupnaKazna() {
-        return ukupnaKazna;
-    }
-
-    public void setUkupnaKazna(BigDecimal ukupnaKazna) {
-        this.ukupnaKazna = ukupnaKazna;
-    }
-
-    public String getNapomena() {
-        return napomena;
-    }
-
-    public void setNapomena(String napomena) {
-        this.napomena = napomena;
-    }
+    
     
 }
