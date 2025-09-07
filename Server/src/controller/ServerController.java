@@ -8,6 +8,7 @@ import domain.Autor;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
+import domain.Pozajmica;
 import so.autor.SOGetAllAutor;
 import so.clan.SOAddClan;
 import so.clan.SODeleteClan;
@@ -17,6 +18,7 @@ import so.knjiga.SOAddKnjiga;
 import so.knjiga.SOGetAllKnjiga;
 import so.knjiga.SOUpdateKnjiga;
 import so.login.SOLogin;
+import so.pozajmica.SOAddPozajmica;
 
 /**
  *
@@ -87,5 +89,10 @@ public class ServerController {
     public void updateKnjiga(Knjiga knjiga) throws Exception {
         SOUpdateKnjiga so=new SOUpdateKnjiga();
         so.templateExecute(knjiga);
+    }
+
+    public void addPozajmica(Pozajmica pozajmica) throws Exception {
+        SOAddPozajmica so=new SOAddPozajmica();
+        so.templateExecute(pozajmica);
     }
 }

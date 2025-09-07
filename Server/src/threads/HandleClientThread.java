@@ -14,6 +14,7 @@ import controller.ServerController;
 import domain.Bibliotekar;
 import domain.Clan;
 import domain.Knjiga;
+import domain.Pozajmica;
 import java.net.Socket;
 
 /**
@@ -79,6 +80,9 @@ public class HandleClientThread extends Thread{
                     break;
                 case Operations.UPDATE_KNJIGA:
                     ServerController.getInstance().updateKnjiga((Knjiga) request.getArgument());
+                    break;  
+                case Operations.ADD_POZAJMICA:
+                    ServerController.getInstance().addPozajmica((Pozajmica) request.getArgument());
                     break;    
                 default:
                     return null;
