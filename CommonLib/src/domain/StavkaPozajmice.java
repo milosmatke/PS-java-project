@@ -73,7 +73,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String condition() {
-        return "";
+        return "WHERE p.id= "+pozajmica.getId()+" ORDER BY k.naslov";
     }
     
 
