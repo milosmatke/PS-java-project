@@ -74,7 +74,7 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
 
         jLabel3.setText("Naslov:");
 
-        txtGodina.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        txtGodina.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         jLabel4.setText("Zanr:");
 
@@ -192,6 +192,7 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
             
             FrmMain main = (FrmMain) getParent();
 	    main.refreshTableKnjiga();
+            this.dispose();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this,"Sistem ne moze izmeni knjigu", "Error",

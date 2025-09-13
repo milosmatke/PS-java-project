@@ -189,7 +189,8 @@ public class FrmUpdateClan extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this,"Sistem je izmenio clana");
             
             FrmMain main = (FrmMain) getParent();
-	    main.refreshTableClan();}
+	    main.refreshTableClan();
+            this.dispose();}
             
         } catch (Exception ex) {
             Logger.getLogger(FrmUpdateClan.class.getName()).log(Level.SEVERE, null, ex);

@@ -19,7 +19,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelKnjiga extends AbstractTableModel{
 
     private List<Knjiga> listaKnjiga;
-    private String[] columnNames=new String[]{"Naslov","Autor","Zanr","Na stanju"};
+    private String[] columnNames=new String[]{"Naslov","Autor","Zanr","Izdavac", "God. izd","Na stanju"};
     private String parametar="";
 
     public TableModelKnjiga() {
@@ -69,6 +69,11 @@ public class TableModelKnjiga extends AbstractTableModel{
             case 2:
                 return knjiga.getZanr();
             case 3:
+                return knjiga.getIzdavac();
+            case 4:
+                return knjiga.getGodinaIzdanja();
+            case 5:
+               
                 return knjiga.getKolicina();
             default:
                 return "n/a";
