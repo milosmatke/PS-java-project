@@ -97,4 +97,7 @@ public class ClientController {
     public void addPozajmica(Pozajmica pozajmica) throws Exception {
         sendRequest(Operations.ADD_POZAJMICA, pozajmica);
     }
+    
+
+    
 }
