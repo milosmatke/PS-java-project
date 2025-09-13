@@ -22,7 +22,6 @@ public abstract class AbstractSO {
            execute(ado);
            commit();
        }catch(Exception e){
-           System.out.println("Desilo se");
            rollback();
            throw e;
        }
@@ -33,7 +32,7 @@ public abstract class AbstractSO {
     }
 
     private void rollback() throws SQLException {
-        System.out.println("Rolbek sranje");
+       
         DBBroker.getInstance().getConnection().rollback();
     }
 }

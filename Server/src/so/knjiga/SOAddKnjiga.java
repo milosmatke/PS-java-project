@@ -28,12 +28,13 @@ public class SOAddKnjiga extends AbstractSO{
                 (ArrayList<Knjiga>) (ArrayList<?>) DBBroker.getInstance().select(ado);
         
         
-       // for (Knjiga k : knjige) {
-            //if(k.getNaziv().equals(knjiga.getNaziv()) 
-                 //   && k.getAutor().getAutorID().equals(k.getAutor().getAutorID())){
-               // throw new Exception("Sistem ne moze da kreira novu knjigu!");
-           // }
-        //
+        for (Knjiga k : knjige) {
+            if(k.getNaslov().equals(knjiga.getNaslov()) &&k.getIzdavac().equals(knjiga.getIzdavac())
+                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())){
+                throw new Exception("Knjiga vec postoji u bazi!");
+            }
+        }
+        
     }
 
     @Override
