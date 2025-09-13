@@ -97,7 +97,13 @@ public class ClientController {
     public void addPozajmica(Pozajmica pozajmica) throws Exception {
         sendRequest(Operations.ADD_POZAJMICA, pozajmica);
     }
-    
+    public List<Pozajmica> getAllPozajmica() throws Exception {
+        return (List<Pozajmica>) sendRequest(Operations.GET_ALL_POZAJMICA, null);
+    }
+
+    public void deletePozajmica(Pozajmica p) throws Exception {
+        sendRequest(Operations.DELETE_POZAJMICA, p);
+    }
 
     
 }
