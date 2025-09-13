@@ -6,6 +6,7 @@ package so.pozajmica;
 
 import db.DBBroker;
 import domain.AbstractDomainObject;
+import domain.Knjiga;
 import domain.Pozajmica;
 import domain.StavkaPozajmice;
 import java.sql.PreparedStatement;
@@ -20,60 +21,60 @@ import so.AbstractSO;
 public class SOAddPozajmica extends AbstractSO{
     @Override
     protected void validate(AbstractDomainObject ado) throws Exception {
-        if(!(ado instanceof Pozajmica)){
-            throw new Exception("Prosledjeni objekat nije instanca klase Pozajmica");
+        if (!(ado instanceof Pozajmica)) {
+            throw new Exception("Prosledjeni objekat nije instanca klase Pozajmica.");
         }
-        
+
         Pozajmica pozajmica = (Pozajmica) ado;
-        
+
         if (pozajmica.getDatumIzdavanja().after(pozajmica.getRokVracanja())) {
-            throw new Exception("Datum izdavanja ne sme biti nakon datuma isteka");
+            throw new Exception("Datum izdavanja ne sme biti nakon datuma isteka.");
         }
 
-        if (pozajmica.getListaStavki().isEmpty()) {
-            throw new Exception("Pozajmica mora da ima bar jednu stavku!");
+        if (pozajmica.getListaStavki() == null || pozajmica.getListaStavki().isEmpty()) {
+            throw new Exception("Pozajmica mora da ima bar jednu stavku.");
         }
-        
-        
 
-        ArrayList<Pozajmica> pozajmice = 
+        // Validacija dostupnosti knjiga iz stavki koje korisnik unosi
+        for (StavkaPozajmice stavka : pozajmica.getListaStavki()) {
+            if (stavka.getKnjiga().getKolicina() <= 0) {
+                throw new Exception("Knjiga '" + stavka.getKnjiga().getNaslov() + "' nije dostupna za pozajmicu.");
+            }
+        }
+
+        //  Provera da li već postoji identična pozajmica
+        ArrayList<Pozajmica> pozajmice =
                 (ArrayList<Pozajmica>) (ArrayList<?>) DBBroker.getInstance().select(ado);
-        
-        StavkaPozajmice sp = new StavkaPozajmice();
-       sp.setPozajmica(pozajmica);
-       ArrayList<AbstractDomainObject> listaStavki=(ArrayList<AbstractDomainObject>) DBBroker.getInstance().select((AbstractDomainObject) sp);
-       ArrayList<StavkaPozajmice> lista = (ArrayList<StavkaPozajmice>) (ArrayList<?>) listaStavki;
-            for (StavkaPozajmice stavka : lista) {
-                if(stavka.getKnjiga().getKolicina()<=0){
-                    throw new Exception("Sistem ne moze da kreira pozajmicu!");
-                }
-            }
-        
+
         for (Pozajmica p : pozajmice) {
-            if(pozajmica.getDatumIzdavanja().equals(p.getDatumIzdavanja()) 
-                    && pozajmica.getRokVracanja().equals(p.getRokVracanja()) 
-                    && pozajmica.getClan().getId()==(p.getClan().getId())){
-                throw new Exception("Sistem ne moze da kreira pozajmicu!");
+            if (pozajmica.getDatumIzdavanja().equals(p.getDatumIzdavanja())
+                    && pozajmica.getRokVracanja().equals(p.getRokVracanja())
+                    && pozajmica.getClan().getId() == p.getClan().getId()) {
+                throw new Exception("Slična pozajmica već postoji za ovog člana u istom periodu.");
             }
-            
         }
     }
 
     @Override
     protected void execute(AbstractDomainObject ado) throws Exception {
+        //  Unos pozajmice i dobijanje ID-a
         PreparedStatement ps = DBBroker.getInstance().insert(ado);
-
         ResultSet tableKeys = ps.getGeneratedKeys();
         tableKeys.next();
         Long pozajmicaID = tableKeys.getLong(1);
 
-        Pozajmica p = (Pozajmica) ado;
-        p.setId(pozajmicaID);
+        Pozajmica pozajmica = (Pozajmica) ado;
+        pozajmica.setId(pozajmicaID);
 
-        for (StavkaPozajmice stavka : p.getListaStavki()) {
-            stavka.setPozajmica(p);
+        //  Unos stavki i smanjenje količine knjige
+        for (StavkaPozajmice stavka : pozajmica.getListaStavki()) {
+            stavka.setPozajmica(pozajmica); // dodeli generisani ID pozajmice
             DBBroker.getInstance().insert(stavka);
+
+            // Smanji količinu knjige
+            Knjiga knjiga = stavka.getKnjiga();
+            knjiga.setKolicina(knjiga.getKolicina() - 1);
+            DBBroker.getInstance().update(knjiga);
         }
-        
     }
 }

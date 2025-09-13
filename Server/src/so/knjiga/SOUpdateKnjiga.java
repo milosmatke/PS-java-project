@@ -29,7 +29,7 @@ public class SOUpdateKnjiga extends AbstractSO{
         
         for (Knjiga k : knjige) {
             if(k.getNaslov().equals(knjiga.getNaslov()) &&k.getIzdavac().equals(knjiga.getIzdavac())
-                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())){
+                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getId()!=knjiga.getId()){
                 throw new Exception("Knjiga vec postoji u bazi!");
             }
         }

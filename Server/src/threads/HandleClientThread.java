@@ -83,7 +83,10 @@ public class HandleClientThread extends Thread{
                     break;  
                 case Operations.ADD_POZAJMICA:
                     ServerController.getInstance().addPozajmica((Pozajmica) request.getArgument());
-                    break;    
+                    break;
+                
+                
+                 
                 default:
                     return null;
             }

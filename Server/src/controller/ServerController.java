@@ -19,6 +19,10 @@ import so.knjiga.SOGetAllKnjiga;
 import so.knjiga.SOUpdateKnjiga;
 import so.login.SOLogin;
 import so.pozajmica.SOAddPozajmica;
+import so.pozajmica.SODeletePozajmica;
+import so.pozajmica.SOGetAllPozajmica;
+import so.pozajmica.SOGetPozajmica;
+import so.pozajmica.SOUpdatePozajmica;
 
 /**
  *
@@ -95,4 +99,8 @@ public class ServerController {
         SOAddPozajmica so=new SOAddPozajmica();
         so.templateExecute(pozajmica);
     }
+
+    
+
+    
 }
