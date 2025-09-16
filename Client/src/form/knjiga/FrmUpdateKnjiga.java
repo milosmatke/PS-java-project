@@ -159,7 +159,7 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAzurirajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAzurirajActionPerformed
-        try {
+         try {
 
             if(txtNaslov.getText().isEmpty()||txtIzdavac.getText().isEmpty()||txtZanr.getText().isEmpty()||txtGodina.getText().isEmpty()){
                 JOptionPane.showMessageDialog(this,"Sistem ne moze da kreira novu knjigu", "Error",
@@ -179,8 +179,8 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
             
            
             
-            if(k.getId()==knjiga.getId() && k.getNaslov().equals(knjiga.getNaslov())&&k.getIzdavac().equals(knjiga.getIzdavac())&&
-                   k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getAutor().getId()==knjiga.getAutor().getId()
+            if(k.getId().equals(knjiga.getId()) && k.getNaslov().equals(knjiga.getNaslov())&&k.getIzdavac().equals(knjiga.getIzdavac())&&
+                   k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getAutor().getId().equals(knjiga.getAutor().getId())
                     &&k.getKolicina()==knjiga.getKolicina() ){
                 
                 JOptionPane.showMessageDialog(this,"Izmena nije izvrsena.");
@@ -234,8 +234,6 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
         txtNaslov.setText(knjiga.getNaslov());
         txtIzdavac.setText(knjiga.getIzdavac());
         txtZanr.setText(knjiga.getZanr());
-        txtNaslov.setText(knjiga.getNaslov());
-        txtNaslov.setText(knjiga.getNaslov());
         txtGodina.setText(String.valueOf(knjiga.getGodinaIzdanja()));
         txtKolicina.setText(String.valueOf(knjiga.getKolicina()));
         
@@ -245,12 +243,14 @@ public class FrmUpdateKnjiga extends javax.swing.JDialog {
             cmbAutor.removeAllItems();
             for (Autor autor : listaAutora) {
                 cmbAutor.addItem(autor);
+                
             }
+            cmbAutor.setSelectedItem(knjiga.getAutor());
         } catch (Exception ex) {
             Logger.getLogger(FrmAddKnjiga.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(knjiga.getAutor().getId());
-        cmbAutor.setSelectedItem(knjiga.getAutor());
+        //System.out.println(knjiga.getAutor().getId());
+       // cmbAutor.setSelectedItem(knjiga.getAutor());
         
     }
 }

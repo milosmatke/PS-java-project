@@ -177,8 +177,9 @@ public class FrmAddKnjiga extends javax.swing.JDialog {
             }
             
                 
-                Knjiga k=new Knjiga(-1, txtNaslov.getText(), txtIzdavac.getText(), Integer.parseInt(txtGodina.getText()),
+                Knjiga k=new Knjiga(null, txtNaslov.getText(), txtIzdavac.getText(), Integer.parseInt(txtGodina.getText()),
                         txtZanr.getText(), (Autor) cmbAutor.getSelectedItem(), Integer.parseInt(txtKolicina.getText()));
+                System.out.println(k.getAutor().getId());
                 ClientController.getInstance().addKnjiga(k);
             
             

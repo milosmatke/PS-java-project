@@ -25,6 +25,9 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
     /**
      * Creates new form FrmFindPozajmica
      */
+    
+    private FrmMain frmMain;
+    
     public FrmFindPozajmica(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -34,6 +37,10 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
         Thread thread=new Thread(tm);
         thread.start();
         tblPozajmica.setModel(tm);
+        
+        if (parent instanceof FrmMain) {
+            this.frmMain = (FrmMain) parent; // čuvamo referencu
+        }
         
     }
 
@@ -167,9 +174,11 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
                    
                     ClientController.getInstance().deletePozajmica(pozajmica);
                     refreshTable();
-                    FrmMain main=new FrmMain();
-                    main.refreshTableKnjiga();
+                    if (frmMain != null) {
+                    frmMain.refreshTableKnjiga(); // osvežavanje na glavnoj formi
+                }
                     JOptionPane.showMessageDialog(this, "Sistem je obrisao pozajmicu");
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(FrmFindPozajmica.class.getName()).log(Level.SEVERE, null, ex);
                 }

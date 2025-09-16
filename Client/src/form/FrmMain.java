@@ -611,12 +611,12 @@ public class FrmMain extends javax.swing.JFrame {
             
             TableModelStavke tmStavke= (TableModelStavke) tblStavka.getModel();
             
-            Pozajmica pozajmica=new Pozajmica(-1, clan, ulogovani,sdf.parse(txtDatumOd.getText()), sdf.parse(txtDatumDo.getText()), (ArrayList<StavkaPozajmice>) tmStavke.getListaStavki());
+            Pozajmica pozajmica=new Pozajmica(null, clan, ulogovani,sdf.parse(txtDatumOd.getText()), sdf.parse(txtDatumDo.getText()), (ArrayList<StavkaPozajmice>) tmStavke.getListaStavki());
                     
                  
             
             ClientController.getInstance().addPozajmica(pozajmica);
-            ClientController.getInstance().updateKnjiga(knjiga);
+            //ClientController.getInstance().updateKnjiga(knjiga);
             JOptionPane.showMessageDialog(this,"Sistem je kreirao pozajmicu");
             resetForm();
             

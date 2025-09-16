@@ -157,7 +157,7 @@ public class FrmAddClan extends javax.swing.JDialog {
                 
             }
             
-            Clan clan=new Clan(-1, txtIme.getText(), txtPrezime.getText(), txtEmail.getText(), txtTelefon.getText(), LocalDate.now().plusYears(1), "aktivan", LocalDateTime.now());
+            Clan clan=new Clan(null, txtIme.getText(), txtPrezime.getText(), txtEmail.getText(), txtTelefon.getText(), LocalDate.now().plusYears(1), "aktivan", LocalDateTime.now());
             ClientController.getInstance().addClan(clan);
             JOptionPane.showMessageDialog(this, "Sistem je kreirao clana!");
             frmMain.refreshTableClan();
