@@ -37,7 +37,7 @@ public class SOAddPozajmica extends AbstractSO{
 
         // Validacija dostupnosti knjiga iz stavki koje korisnik unosi
         for (StavkaPozajmice stavka : pozajmica.getListaStavki()) {
-            if (stavka.getKnjiga().getKolicina() <= 0) {
+            if (stavka.getKnjiga().getKolicina() < 0) {
                 throw new Exception("Knjiga '" + stavka.getKnjiga().getNaslov() + "' nije dostupna za pozajmicu.");
             }
         }
@@ -49,7 +49,7 @@ public class SOAddPozajmica extends AbstractSO{
         for (Pozajmica p : pozajmice) {
             if (pozajmica.getDatumIzdavanja().equals(p.getDatumIzdavanja())
                     && pozajmica.getRokVracanja().equals(p.getRokVracanja())
-                    && pozajmica.getClan().getId() == p.getClan().getId()) {
+                    && pozajmica.getClan().getId().equals( p.getClan().getId())) {
                 throw new Exception("Slična pozajmica već postoji za ovog člana u istom periodu.");
             }
         }
@@ -73,7 +73,7 @@ public class SOAddPozajmica extends AbstractSO{
 
             // Smanji količinu knjige
             Knjiga knjiga = stavka.getKnjiga();
-            knjiga.setKolicina(knjiga.getKolicina() - 1);
+            knjiga.setKolicina(knjiga.getKolicina());
             DBBroker.getInstance().update(knjiga);
         }
     }

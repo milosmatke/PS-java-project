@@ -21,18 +21,18 @@ public class SOUpdateKnjiga extends AbstractSO{
         if(!(ado instanceof Knjiga)){
             throw new Exception("Prosledjeni objekat nije instanca klase Knjiga!");
         }
-        Knjiga knjiga = (Knjiga) ado;
-
-        ArrayList<Knjiga> knjige = 
-                (ArrayList<Knjiga>) (ArrayList<?>) DBBroker.getInstance().select(ado);
-        
-        
-        for (Knjiga k : knjige) {
-            if(k.getNaslov().equals(knjiga.getNaslov()) &&k.getIzdavac().equals(knjiga.getIzdavac())
-                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getId()!=knjiga.getId()){
-                throw new Exception("Knjiga vec postoji u bazi!");
-            }
-        }
+//        Knjiga knjiga = (Knjiga) ado;
+//
+//        ArrayList<Knjiga> knjige = 
+//                (ArrayList<Knjiga>) (ArrayList<?>) DBBroker.getInstance().select(ado);
+//        
+//        
+//        for (Knjiga k : knjige) {
+//            if(k.getNaslov().equals(knjiga.getNaslov()) &&k.getIzdavac().equals(knjiga.getIzdavac())
+//                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())&&k.getId()!=knjiga.getId()){
+//                throw new Exception("Knjiga vec postoji u bazi!");
+//            }
+//        }
     }
 
     @Override

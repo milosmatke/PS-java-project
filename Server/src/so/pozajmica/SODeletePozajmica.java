@@ -37,6 +37,7 @@ public class SODeletePozajmica extends AbstractSO{
         for (StavkaPozajmice stavka : lista) {
             Knjiga knjiga= stavka.getKnjiga();
             System.out.println(knjiga);
+            System.out.println(knjiga.getId());
             knjiga.setKolicina(knjiga.getKolicina()+1);
             System.out.println(knjiga.getKolicina());
             try{

@@ -30,7 +30,7 @@ public class SOAddKnjiga extends AbstractSO{
         
         for (Knjiga k : knjige) {
             if(k.getNaslov().equals(knjiga.getNaslov()) &&k.getIzdavac().equals(knjiga.getIzdavac())
-                    && k.getAutor().getId()==k.getAutor().getId()&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())){
+                    && k.getAutor().getId().equals(k.getAutor().getId())&& k.getGodinaIzdanja()==knjiga.getGodinaIzdanja()&&k.getZanr().equals(knjiga.getZanr())){
                 throw new Exception("Knjiga vec postoji u bazi!");
             }
         }
@@ -40,6 +40,7 @@ public class SOAddKnjiga extends AbstractSO{
     @Override
     protected void execute(AbstractDomainObject ado) throws Exception {
         DBBroker.getInstance().insert(ado);
+        System.out.println(ado);
     }
     
 }
