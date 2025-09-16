@@ -104,6 +104,13 @@ public class ClientController {
     public void deletePozajmica(Pozajmica p) throws Exception {
         sendRequest(Operations.DELETE_POZAJMICA, p);
     }
+    
+    public void updatePozajmica(Pozajmica pozajmica) throws Exception {
+        sendRequest(Operations.UPDATE_POZAJMICA, pozajmica);
+    }
+    public Pozajmica getPozajmica(Pozajmica pozajmica) throws Exception {
+        return (Pozajmica) sendRequest(Operations.GET_POZAJMICA, pozajmica);
+    }
 
     
 }

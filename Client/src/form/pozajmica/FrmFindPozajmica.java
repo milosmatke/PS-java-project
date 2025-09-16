@@ -154,7 +154,43 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
     private void btnProduziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProduziActionPerformed
-        
+        int rowIndex=tblPozajmica.getSelectedRow();
+        if(rowIndex>=0){
+            try {
+                SimpleDateFormat sdf=new SimpleDateFormat("dd.MM.yyyy");
+                TableModelPozajmica tm=(TableModelPozajmica) tblPozajmica.getModel();
+                Pozajmica osnovna= tm.getPozajmica(rowIndex);
+                Pozajmica pozajmica=ClientController.getInstance().getPozajmica(osnovna);
+                
+                
+                Calendar calendar = Calendar.getInstance();
+                Date date = pozajmica.getRokVracanja(); 
+                
+                long razlika= (date.getTime()-pozajmica.getDatumIzdavanja().getTime())/(1000*60*60*24);
+                System.out.println(razlika);
+                if(razlika>=40){
+                     JOptionPane.showMessageDialog(this,
+                            "Zaduzenje ne moze biti produzeno vise od jedanput","Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                calendar.setTime(date);
+                int daysToAdd = 20;
+                calendar.add(Calendar.DAY_OF_MONTH, daysToAdd); 
+                Date newDate = calendar.getTime();
+                
+                
+                
+                pozajmica.setRokVracanja(newDate);
+                
+
+                ClientController.getInstance().updatePozajmica(pozajmica);
+            } catch (Exception ex) {
+                Logger.getLogger(FrmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"Niste odabrali nijednu uslugu","Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnProduziActionPerformed
 
     private void btnObrisiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiActionPerformed
