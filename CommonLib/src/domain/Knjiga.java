@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class Knjiga implements AbstractDomainObject{
     
-    private long id;
+    private Long id;
     private String naslov;
     private String izdavac;
     private int godinaIzdanja;     
@@ -27,7 +28,7 @@ public class Knjiga implements AbstractDomainObject{
     public Knjiga() {
     }
 
-    public Knjiga(long id, String naslov, String izdavac, int godinaIzdanja, String zanr, Autor autor, int kolicina) {
+    public Knjiga(Long id, String naslov, String izdavac, int godinaIzdanja, String zanr, Autor autor, int kolicina) {
         this.id = id;
         this.naslov = naslov;
         this.izdavac = izdavac;
@@ -64,8 +65,10 @@ public class Knjiga implements AbstractDomainObject{
             return false;
         }
         final Knjiga other = (Knjiga) obj;
-        return this.id == other.id;
+        return Objects.equals(this.id, other.id);
     }
+
+    
     
     
    
@@ -77,7 +80,7 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (naslov, izdavac, kolicina, autor_id, godinaIzdanja,zanr) ";
+        return " (naslov, izdavac, kolicina, autor, godinaIzdanja,zanr) ";
     }
 
     @Override
@@ -91,14 +94,14 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String getUpdateValues() {
-        return  "naslov='"+naslov+"', izdavac='"+ izdavac+"', kolicina='"+ kolicina+ "', autor_id='"+ autor.getId()+
+        return  "naslov='"+naslov+"', izdavac='"+ izdavac+"', kolicina='"+ kolicina+ "', autor='"+ autor.getId()+
                 "', godinaIzdanja='"+ godinaIzdanja+"', zanr='" + zanr + "'";
                          
     }
 
     @Override
     public String getPrimaryKeyValue() {
-         return " id=" + id;
+         return " knjiga_id=" + id;
     }
 
     @Override
@@ -108,7 +111,7 @@ public class Knjiga implements AbstractDomainObject{
 
     @Override
     public String join() {
-        return "INNER JOIN Autor a ON (k.autor_id = a.id) ";
+        return "INNER JOIN Autor a ON (k.autor = a.autor_id) ";
     }
 
     @Override
@@ -122,9 +125,9 @@ public class Knjiga implements AbstractDomainObject{
 
         while (rs.next()) {
             
-            Autor autor = new Autor(rs.getLong("id"),
+            Autor autor = new Autor(rs.getLong("autor_id"),
                     rs.getString("ime"), rs.getString("prezime"));
-            Knjiga knjiga= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac"),
+            Knjiga knjiga= new Knjiga(rs.getLong("knjiga_id"),  rs.getString("naslov"),  rs.getString("izdavac"),
                     rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getInt("kolicina"));
 
             
@@ -136,11 +139,11 @@ public class Knjiga implements AbstractDomainObject{
         return lista;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

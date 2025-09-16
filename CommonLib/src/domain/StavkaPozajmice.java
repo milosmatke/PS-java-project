@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class StavkaPozajmice implements AbstractDomainObject{
     
-    private Pozajmica pozajmica; // PK deo 1
-    private Knjiga knjiga;   // PK deo 2
+    private Pozajmica pozajmica; 
+    private Knjiga knjiga;   
     private int rbStavke;
    
 
@@ -38,7 +38,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (pozajmica_id, knjiga_id, rbStavke) ";
+        return " (pozajmica, knjiga, rbStavke) ";
     }
 
     @Override
@@ -54,7 +54,7 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String getPrimaryKeyValue() {
-         return " pozajmica_id = " + pozajmica.getId();
+         return " pozajmica = " + pozajmica.getId();
     }
 
     @Override
@@ -64,16 +64,16 @@ public class StavkaPozajmice implements AbstractDomainObject{
 
     @Override
     public String join() {
-        return "INNER JOIN pozajmica p ON (p.id = sp.pozajmica_id) "
-                +"INNER JOIN clan c ON (c.id = p.clan_id)"
-                +"INNER JOIN Bibliotekar b ON (b.id = p.bibliotekar_id)"
-		+"INNER JOIN Knjiga k ON (k.id = sp.knjiga_id) "
-                +"INNER JOIN Autor a ON (k.autor_id=a.id)";
+        return "INNER JOIN pozajmica p ON (p.pozajmica_id = sp.pozajmica) "
+                +"INNER JOIN clan c ON (c.clan_id = p.clan)"
+                +"INNER JOIN Bibliotekar b ON (b.bibliotekar_id = p.bibliotekar)"
+		+"INNER JOIN Knjiga k ON (k.knjiga_id = sp.knjiga) "
+                +"INNER JOIN Autor a ON (k.autor=a.autor_id)";
     }
 
     @Override
     public String condition() {
-        return "WHERE p.id= "+pozajmica.getId()+" ORDER BY k.naslov";
+        return "WHERE pozajmica= "+pozajmica.getId()+" ORDER BY k.naslov";
     }
     
 
@@ -81,15 +81,15 @@ public class StavkaPozajmice implements AbstractDomainObject{
     public List<AbstractDomainObject> getAll(ResultSet rs) throws SQLException {
         ArrayList<AbstractDomainObject> list = new ArrayList<>();
         while (rs.next()) {
-            Autor autor = new Autor(rs.getLong("id"),
+            Autor autor = new Autor(rs.getLong("autor_id"),
                     rs.getString("ime"), rs.getString("prezime"));
-            Knjiga k= new Knjiga(rs.getLong("id"),  rs.getString("naslov"),  rs.getString("izdavac")
+            Knjiga k= new Knjiga(rs.getLong("knjiga_id"),  rs.getString("naslov"),  rs.getString("izdavac")
                     ,rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getInt("kolicina"));
 
             
             
             Pozajmica p = new Pozajmica(
-                rs.getLong("p.id"),
+                rs.getLong("pozajmica_id"),
                 null, null,
                 rs.getDate("p.datum_izdavanja"),
                 rs.getDate("p.rok_vracanja"),null

@@ -10,13 +10,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author Korisnik
  */
 public class Clan implements AbstractDomainObject{
-   private long id;
+    private Long id;
     
     private String ime;
     private String prezime;
@@ -28,7 +29,7 @@ public class Clan implements AbstractDomainObject{
 
     public Clan() {}
 
-    public Clan(long id, String ime, String prezime, String email,
+    public Clan(Long id, String ime, String prezime, String email,
                 String telefon, LocalDate datumIsteka, String status, LocalDateTime createdAt) {
         this.id=id; this.ime=ime; this.prezime=prezime;
         this.email=email; this.telefon=telefon; this.datumIsteka=datumIsteka;
@@ -44,7 +45,7 @@ public class Clan implements AbstractDomainObject{
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 3;
         return hash;
     }
 
@@ -60,15 +61,13 @@ public class Clan implements AbstractDomainObject{
             return false;
         }
         final Clan other = (Clan) obj;
-        return this.id == other.id;
+        return Objects.equals(this.id, other.id);
     }
+
     
     
 
-    @Override
-    public String getTableName() {
-       return " clan ";
-    }
+    
 
     @Override
     public String getColumnNamesForInsert() {
@@ -96,7 +95,7 @@ public class Clan implements AbstractDomainObject{
 
     @Override
     public String getPrimaryKeyValue() {
-        return " id=" + id;
+        return " clan_id=" + id;
     }
 
     @Override
@@ -119,7 +118,7 @@ public class Clan implements AbstractDomainObject{
         ArrayList<AbstractDomainObject> list = new ArrayList<>();
         while (rs.next()) {
             list.add(new Clan(
-                rs.getLong("id"),
+                rs.getLong("clan_id"),
                 
                 rs.getString("ime"),
                 rs.getString("prezime"),
@@ -133,11 +132,11 @@ public class Clan implements AbstractDomainObject{
         rs.close(); return list;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -197,6 +196,11 @@ public class Clan implements AbstractDomainObject{
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String getTableName() {
+        return "clan";
     }
     
 }

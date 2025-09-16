@@ -17,7 +17,7 @@ import java.util.List;
  * @author Korisnik
  */
 public class Pozajmica implements AbstractDomainObject{
-    private long id;
+    private Long id;
     private Clan clan;
     private Bibliotekar bibliotekar;
     private Date datumIzdavanja;
@@ -26,7 +26,7 @@ public class Pozajmica implements AbstractDomainObject{
 
     public Pozajmica() {}
 
-    public Pozajmica(long id, Clan clan, Bibliotekar bibliotekar,
+    public Pozajmica(Long id, Clan clan, Bibliotekar bibliotekar,
                      Date datumIzdavanja, Date rokVracanja,
                       ArrayList<StavkaPozajmice> listaStavki) {
         this.id=id; this.clan=clan; this.bibliotekar=bibliotekar;
@@ -42,7 +42,7 @@ public class Pozajmica implements AbstractDomainObject{
 
     @Override
     public String getColumnNamesForInsert() {
-        return " (clan_id, bibliotekar_id, datum_izdavanja, rok_vracanja) ";
+        return " (clan, bibliotekar, datum_izdavanja, rok_vracanja) ";
     }
 
     @Override
@@ -55,12 +55,12 @@ public class Pozajmica implements AbstractDomainObject{
 
     @Override
     public String getUpdateValues() {
-        return "clan_id='"+ clan.getId()+"', bibliotekar_id='"+bibliotekar.getId()+"',datum_izdavanja='" + new Timestamp(datumIzdavanja.getTime()) + "', rok_vracanja='" + new Timestamp(rokVracanja.getTime());
+        return "clan='"+ clan.getId()+"', bibliotekar='"+bibliotekar.getId()+"',datum_izdavanja='" + new Timestamp(datumIzdavanja.getTime()) + "', rok_vracanja='" + new Timestamp(rokVracanja.getTime());
     }
 
     @Override
     public String getPrimaryKeyValue() {
-        return " id=" + id;
+        return " pozajmica_id=" + id;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class Pozajmica implements AbstractDomainObject{
 
     @Override
     public String join() {
-        return " JOIN clan c ON c.id = p.clan_id " +
-               " JOIN bibliotekar b ON b.id = p.bibliotekar_id ";
+        return " JOIN clan c ON c.clan_id = p.clan " +
+               " JOIN bibliotekar b ON b.bibliotekar_id = p.bibliotekar ";
         // Stavke i primerci se učitavaju posebnim upitom preko klase StavkaPozajmice
     }
 
@@ -85,7 +85,7 @@ public class Pozajmica implements AbstractDomainObject{
         ArrayList<AbstractDomainObject> list = new ArrayList<>();
         while (rs.next()) {
             Clan c = new Clan(
-                rs.getLong("c.id"),
+                rs.getLong("c.clan_id"),
                 
                 rs.getString("c.ime"),
                 rs.getString("c.prezime"),
@@ -96,7 +96,7 @@ public class Pozajmica implements AbstractDomainObject{
                 rs.getTimestamp("c.created_at").toLocalDateTime()
             );
             Bibliotekar b = new Bibliotekar(
-                rs.getLong("b.id"),
+                rs.getLong("b.bibliotekar_id"),
                 rs.getString("b.korisnicko_ime"),
                 rs.getString("b.lozinka"),
                 rs.getString("b.ime"),
@@ -105,7 +105,7 @@ public class Pozajmica implements AbstractDomainObject{
                 rs.getBoolean("b.active")
             );
             list.add(new Pozajmica(
-                rs.getLong("p.id"),
+                rs.getLong("p.pozajmica_id"),
                 c,
                 b,
                 rs.getDate("p.datum_izdavanja"),
@@ -117,11 +117,11 @@ public class Pozajmica implements AbstractDomainObject{
         rs.close(); return list;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

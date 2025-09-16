@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -15,14 +16,14 @@ import java.util.List;
  */
 public class Autor implements AbstractDomainObject{
     
-    private long id;
+    private Long id;
     private String ime;
     private String prezime;
    
 
     public Autor() {}
 
-    public Autor(long id, String ime, String prezime) {
+    public Autor(Long id, String ime, String prezime) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
@@ -52,7 +53,7 @@ public class Autor implements AbstractDomainObject{
 
     @Override
     public String getPrimaryKeyValue() {
-         return " id=" + id;
+         return " autor_id=" + id;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class Autor implements AbstractDomainObject{
         ArrayList<AbstractDomainObject> lista = new ArrayList<>();
         while (rs.next()) {
             Autor a = new Autor(
-                    rs.getLong("id"),
+                    rs.getLong("autor_id"),
                     rs.getString("ime"),
                     rs.getString("prezime")
                    
@@ -86,11 +87,11 @@ public class Autor implements AbstractDomainObject{
         return lista;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -119,7 +120,7 @@ public class Autor implements AbstractDomainObject{
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 7;
         return hash;
     }
 
@@ -135,8 +136,12 @@ public class Autor implements AbstractDomainObject{
             return false;
         }
         final Autor other = (Autor) obj;
-        return this.id == other.id;
+        return Objects.equals(this.id, other.id);
     }
+
+    
+    
+    
     
     
 }

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class Bibliotekar implements AbstractDomainObject{
     
-   private long id;
+   private Long id;
     private String korisnickoIme; // korisnicko_ime
     private String lozinkaHash;   // lozinka_hash
     private String ime;
@@ -25,7 +26,7 @@ public class Bibliotekar implements AbstractDomainObject{
 
     public Bibliotekar() {}
 
-    public Bibliotekar(long id, String korisnickoIme, String lozinkaHash,
+    public Bibliotekar(Long id, String korisnickoIme, String lozinkaHash,
                        String ime, String prezime, String uloga, boolean active) {
         this.id=id; this.korisnickoIme=korisnickoIme; this.lozinkaHash=lozinkaHash;
         this.ime=ime; this.prezime=prezime; this.uloga=uloga; this.active=active;
@@ -38,7 +39,7 @@ public class Bibliotekar implements AbstractDomainObject{
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 5;
         return hash;
     }
 
@@ -54,8 +55,10 @@ public class Bibliotekar implements AbstractDomainObject{
             return false;
         }
         final Bibliotekar other = (Bibliotekar) obj;
-        return this.id == other.id;
+        return Objects.equals(this.id, other.id);
     }
+
+    
     
     
     
@@ -86,7 +89,7 @@ public class Bibliotekar implements AbstractDomainObject{
 
     @Override
     public String getPrimaryKeyValue() {
-        return " id=" + id;
+        return "bibliotekar_id=" + id;
     }
 
     @Override
@@ -109,7 +112,7 @@ public class Bibliotekar implements AbstractDomainObject{
         ArrayList<AbstractDomainObject> list = new ArrayList<>();
         while (rs.next()) {
             list.add(new Bibliotekar(
-                rs.getLong("id"),
+                rs.getLong("bibliotekar_id"),
                 rs.getString("korisnicko_ime"),
                 rs.getString("lozinka"),
                 rs.getString("ime"),
@@ -121,11 +124,11 @@ public class Bibliotekar implements AbstractDomainObject{
         rs.close(); return list;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -176,6 +179,7 @@ public class Bibliotekar implements AbstractDomainObject{
     public void setActive(boolean active) {
         this.active = active;
     }
+    
 
     
     
