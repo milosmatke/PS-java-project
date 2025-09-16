@@ -90,6 +90,12 @@ public class HandleClientThread extends Thread{
                 case Operations.DELETE_POZAJMICA:
                     ServerController.getInstance().deletePozajmica((Pozajmica) request.getArgument());
                     break;
+                case Operations.UPDATE_POZAJMICA:
+                    ServerController.getInstance().updatePozajmica((Pozajmica) request.getArgument());
+                    break;    
+                case Operations.GET_POZAJMICA:
+                    response.setResult(ServerController.getInstance().getPozajmica((Pozajmica) request.getArgument()));
+                    break;
                 
                  
                 default:

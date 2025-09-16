@@ -110,6 +110,17 @@ public class ServerController {
         SODeletePozajmica so=new SODeletePozajmica();
         so.templateExecute(pozajmica);
     }
+    
+    public void updatePozajmica(Pozajmica pozajmica) throws Exception {
+        SOUpdatePozajmica so= new SOUpdatePozajmica();
+         so.templateExecute(pozajmica);
+    }
+    
+    public Object getPozajmica(Pozajmica pozajmica) throws Exception {
+        SOGetPozajmica so=new SOGetPozajmica();
+        so.templateExecute(pozajmica);
+        return so.getPozajmica();
+    }
 
     
 }
