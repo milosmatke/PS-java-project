@@ -55,7 +55,7 @@ public class Pozajmica implements AbstractDomainObject{
 
     @Override
     public String getUpdateValues() {
-        return "clan='"+ clan.getId()+"', bibliotekar='"+bibliotekar.getId()+"',datum_izdavanja='" + new Timestamp(datumIzdavanja.getTime()) + "', rok_vracanja='" + new Timestamp(rokVracanja.getTime());
+        return "clan='"+ clan.getId()+"', bibliotekar='"+bibliotekar.getId()+"',datum_izdavanja='" + new Timestamp(datumIzdavanja.getTime()) + "', rok_vracanja='" + new Timestamp(rokVracanja.getTime())+"'";
     }
 
     @Override
