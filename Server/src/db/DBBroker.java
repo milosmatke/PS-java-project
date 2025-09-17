@@ -28,13 +28,14 @@ public class DBBroker {
             Properties properties=new Properties();
             properties.load(new FileInputStream("dbConfig.properties"));
             
-            String url="jdbc:mysql://localhost:3306/biblioteka";
-            String username=properties.getProperty("username");
+            //String url="jdbc:mysql://localhost:3306/biblioteka";
+            String url="jdbc:mysql://localhost:3306/"+properties.getProperty("url");
+            String username=properties.getProperty("user");
             String password=properties.getProperty("password");
             
             
             
-            connection=DriverManager.getConnection(url,"root","");
+            connection=DriverManager.getConnection(url, username, password);
             connection.setAutoCommit(false);
             
         } catch (Exception ex) {
