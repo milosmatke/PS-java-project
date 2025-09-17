@@ -118,14 +118,25 @@ public class TableModelKnjiga extends AbstractTableModel{
         fireTableDataChanged();
     }
 
+//    public void povecajKolicinu(Knjiga knjiga) {
+//        for (Knjiga k : listaKnjiga) {
+//            if(k.getId().equals(knjiga.getId())){
+//                int novaKolicina=knjiga.getKolicina()+1;
+//                knjiga.setKolicina(novaKolicina);
+//                fireTableDataChanged();
+//            }
+//        }
+//    }
+    
     public void povecajKolicinu(Knjiga knjiga) {
-        for (Knjiga k : listaKnjiga) {
-            if(k.equals(knjiga)){
-                int novaKolicina=knjiga.getKolicina()+1;
-                knjiga.setKolicina(novaKolicina);
-                fireTableDataChanged();
-            }
+    for (Knjiga k : listaKnjiga) {
+        if(k.getId().equals(knjiga.getId())){
+            int novaKolicina = k.getKolicina() + 1;  // menjaj k, ne knjiga
+            k.setKolicina(novaKolicina);
+            fireTableDataChanged();
+            break;
         }
     }
+}
     
 }

@@ -150,7 +150,20 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
     }//GEN-LAST:event_txtPretragaKeyReleased
 
     private void btnIzmeniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzmeniActionPerformed
-      
+      int rowIndex=tblPozajmica.getSelectedRow();
+        if(rowIndex>=0){
+            try {
+                TableModelPozajmica tm=(TableModelPozajmica) tblPozajmica.getModel();
+                Pozajmica pozajmica= ClientController.getInstance().getPozajmica(tm.getPozajmica(rowIndex));
+                JOptionPane.showMessageDialog(this,"Sistem je ucitao pozajmicu.");
+                new FrmUpdatePozajmica(frmMain, true,pozajmica).setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(FrmFindPozajmica.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this,"Sistem ne moze da ucita pozajmicu","Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnIzmeniActionPerformed
 
     private void btnProduziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProduziActionPerformed
@@ -170,7 +183,7 @@ public class FrmFindPozajmica extends javax.swing.JDialog {
                 System.out.println(razlika);
                 if(razlika>=40){
                      JOptionPane.showMessageDialog(this,
-                            "Zaduzenje ne moze biti produzeno vise od jedanput","Error", JOptionPane.ERROR_MESSAGE);
+                            "Zaduzenje ne moze biti produzeno na vise od 40 dana","Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 calendar.setTime(date);
