@@ -34,6 +34,9 @@ public class SOAddPozajmica extends AbstractSO{
         if (pozajmica.getListaStavki() == null || pozajmica.getListaStavki().isEmpty()) {
             throw new Exception("Pozajmica mora da ima bar jednu stavku.");
         }
+        if(!pozajmica.getClan().getStatus().equals("aktivan")){
+            throw new Exception("Clan mora imati aktivan status.");
+        }
 
         // Validacija dostupnosti knjiga iz stavki koje korisnik unosi
         for (StavkaPozajmice stavka : pozajmica.getListaStavki()) {

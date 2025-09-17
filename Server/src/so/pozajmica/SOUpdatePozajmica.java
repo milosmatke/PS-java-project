@@ -6,8 +6,10 @@ package so.pozajmica;
 
 import db.DBBroker;
 import domain.AbstractDomainObject;
+import domain.Knjiga;
 import domain.Pozajmica;
 import domain.StavkaPozajmice;
+import java.util.ArrayList;
 import so.AbstractSO;
 
 /**
@@ -31,23 +33,54 @@ public class SOUpdatePozajmica extends AbstractSO{
         if (pozajmica.getListaStavki() == null||pozajmica.getListaStavki().isEmpty()) {
             throw new Exception("Pozajmica mora da ima bar jednu stavku!");
         }
+        if(!pozajmica.getClan().getStatus().equals("aktivan")){
+            throw new Exception("Clan mora imati aktivan status.");
+        }
     }
 
     @Override
     protected void execute(AbstractDomainObject ado) throws Exception {
-        DBBroker.getInstance().update(ado);
-        Pozajmica pozajmica=(Pozajmica) ado;
-        System.out.println(pozajmica);
-        System.out.println(pozajmica.getListaStavki());
-        
-        DBBroker.getInstance().delete(pozajmica.getListaStavki().get(0));
-        
-        
-        for (StavkaPozajmice sp : pozajmica.getListaStavki()) {
-            sp.setPozajmica(pozajmica);
-            DBBroker.getInstance().insert(sp);
-            
+
+
+        Pozajmica novaPozajmica = (Pozajmica) ado;
+
+    
+        StavkaPozajmice spZaSelect = new StavkaPozajmice();
+        spZaSelect.setPozajmica(novaPozajmica);
+        //@SuppressWarnings("unchecked")
+        ArrayList<StavkaPozajmice> stareStavke =
+        (ArrayList<StavkaPozajmice>)(ArrayList<?>) DBBroker.getInstance().select(spZaSelect);
+
+    
+        for (StavkaPozajmice staraStavka : stareStavke) {
+            if (!novaPozajmica.getListaStavki().contains(staraStavka)) {
+                Knjiga k = staraStavka.getKnjiga();
+                k.setKolicina(k.getKolicina()+1);
+                DBBroker.getInstance().update(k);
+            }
+        }
+
+    
+        for (StavkaPozajmice novaStavka : novaPozajmica.getListaStavki()) {
+            if (!stareStavke.contains(novaStavka)) {
+                Knjiga k = novaStavka.getKnjiga();
+                k.setKolicina(k.getKolicina());
+                DBBroker.getInstance().update(k);
+            }
+        }
+
+   
+        DBBroker.getInstance().update(novaPozajmica);
+
+    
+        for (StavkaPozajmice staraStavka : stareStavke) {
+            DBBroker.getInstance().delete(staraStavka);
+        }  
+
+    
+        for (StavkaPozajmice novaStavka : novaPozajmica.getListaStavki()) {
+            novaStavka.setPozajmica(novaPozajmica);
+            DBBroker.getInstance().insert(novaStavka);
         }
     }
-    
 }
