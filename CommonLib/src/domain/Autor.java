@@ -47,7 +47,7 @@ public class Autor implements AbstractDomainObject{
 
     @Override
     public String getUpdateValues() {
-        return " ime='" + ime + "', prezime='" + prezime + "'";
+        return " autor_ime='" + ime + "', autor_prezime='" + prezime + "'";
 
     }
 
@@ -77,8 +77,8 @@ public class Autor implements AbstractDomainObject{
         while (rs.next()) {
             Autor a = new Autor(
                     rs.getLong("autor_id"),
-                    rs.getString("ime"),
-                    rs.getString("prezime")
+                    rs.getString("autor_ime"),
+                    rs.getString("autor_prezime")
                    
             );
             lista.add(a);

@@ -126,7 +126,7 @@ public class Knjiga implements AbstractDomainObject{
         while (rs.next()) {
             
             Autor autor = new Autor(rs.getLong("autor_id"),
-                    rs.getString("ime"), rs.getString("prezime"));
+                    rs.getString("autor_ime"), rs.getString("autor_prezime"));
             Knjiga knjiga= new Knjiga(rs.getLong("knjiga_id"),  rs.getString("naslov"),  rs.getString("izdavac"),
                     rs.getInt("godinaIzdanja") , rs.getString("zanr"), autor, rs.getInt("kolicina"));
 
